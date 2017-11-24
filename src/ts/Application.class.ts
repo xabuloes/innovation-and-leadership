@@ -1,6 +1,7 @@
 import * as THREE from "three";
-import {MapMarker} from "./Brick.class";
+import {MapMarker} from "./classes/NavigationMapMarker.class";
 import {MTLLoader, OBJLoader, OrbitControls} from "three";
+import {NavigationMap} from "./classes/NavigationMap.class";
 
 declare const loadAdditionalThreeJsDependencies: Function;
 
@@ -13,16 +14,15 @@ class Application {
 
     private readonly scene = new THREE.Scene();
     private readonly camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 10000);
+    private readonly mouse: THREE.Vector2 = new THREE.Vector2(0, 0);
 
     private marker: MapMarker;
 
-    private map: THREE.Group;
+    private map: NavigationMap;
 
     private rayCaster: THREE.Raycaster;
 
     private lighting: THREE.Light;
-
-    private mouse: THREE.Vector2 = new THREE.Vector2(0, 0);
 
     private controls: THREE.OrbitControls;
 
@@ -52,56 +52,19 @@ class Application {
 
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 
-        let loadMap: () => Promise<void> = () => {
+        this.map = new NavigationMap();
 
-            return new Promise((resolve, reject) => {
+        const url: any = window.location;
+        const baseUrl: string = url.protocol + "//" + url.host + "/" + url.pathname.split('/')[1];
 
-                const objLoader: OBJLoader = new OBJLoader();
-                const mtlLoader: MTLLoader = new MTLLoader();
-
-                const url: any = window.location;
-                const baseUrl: string = url.protocol + "//" + url.host + "/" + url.pathname.split('/')[1];
-
-                mtlLoader.setBaseUrl(baseUrl);
-
-                mtlLoader.load("assets/techfak_map.mtl",
-                    (materials: any) => {
-
-                        materials.preload();
-
-                        objLoader.setMaterials(materials);
-
-                        objLoader.load("assets/techfak_map.obj",
-                            (object: THREE.Group) => {
-
-                                this.map = object;
-
-                                this.scene.add(this.map);
-
-                                resolve();
-                            },
-                            (xhr: any) => {
-
-                            },
-                            (error: any) => {
-                                reject();
-                            });
-
-                    },
-                    () => {
-
-                    },
-                    (error: any) => {
-                        reject();
-                    });
-
-
-            });
-
-        };
-
-        loadMap()
+        map.loadMapMesh(
+            "assets/techfak_map.obj",
+            "assets/techfak_map.mtl",
+            baseUrl)
             .then(() => {
+
+                this.scene.add(map.mapMesh);
+
                 this.render();
             });
 
