@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import {MapMarker} from "./Brick.class";
-import {MTLLoader, OBJLoader} from "three";
+import {MTLLoader, OBJLoader, OrbitControls} from "three";
 
 declare const loadAdditionalThreeJsDependencies: Function;
 
@@ -23,6 +23,8 @@ class Application {
     private lighting: THREE.Light;
 
     private mouse: THREE.Vector2 = new THREE.Vector2(0, 0);
+
+    private controls: THREE.OrbitControls;
 
     constructor() {
 
@@ -48,6 +50,8 @@ class Application {
         this.renderer.setClearColor(new THREE.Color("rgb(0,0,0)"));
         this.camera.lookAt(<THREE.Vector3>{x: 0, y: 0, z: 0});
 
+        this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+
         let loadMap: () => Promise<void> = () => {
 
             return new Promise((resolve, reject) => {
@@ -58,7 +62,6 @@ class Application {
                 const url: any = window.location;
                 const baseUrl: string = url.protocol + "//" + url.host + "/" + url.pathname.split('/')[1];
 
-                alert(baseUrl);
                 mtlLoader.setBaseUrl(baseUrl);
 
                 mtlLoader.load("assets/techfak_map.mtl",
@@ -119,14 +122,7 @@ class Application {
 
         this.adjustCanvasSize();
 
-        this.updateKeyboard();
-
         this.updateEnvironment();
-
-    }
-
-    private updateKeyboard(): void {
-
 
     }
 
@@ -147,10 +143,6 @@ class Application {
                 if (pointerLabelTextField) {
                     pointerLabelTextField.innerText = pointedAt.name;
                 }
-
-                console.log(pointedAt.getWorldPosition());
-
-                this.camera.lookAt(pointedAt.position);
 
             }
 
