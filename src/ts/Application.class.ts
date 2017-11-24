@@ -55,14 +55,20 @@ class Application {
                 const objLoader: OBJLoader = new OBJLoader();
                 const mtlLoader: MTLLoader = new MTLLoader();
 
-                mtlLoader.load("../../assets/techfak_map.mtl",
+                const url: any = window.location;
+                const baseUrl: string = url.protocol + "//" + url.host + "/" + url.pathname.split('/')[1];
+
+                alert(baseUrl);
+                mtlLoader.setBaseUrl(baseUrl);
+
+                mtlLoader.load("assets/techfak_map.mtl",
                     (materials: any) => {
 
                         materials.preload();
 
                         objLoader.setMaterials(materials);
 
-                        objLoader.load("../../assets/techfak_map.obj",
+                        objLoader.load("assets/techfak_map.obj",
                             (object: THREE.Group) => {
 
                                 this.map = object;
