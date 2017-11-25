@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import {MapMarker} from "./classes/NavigationMapMarker.class";
-import {MTLLoader, OBJLoader, OrbitControls} from "three";
+import {BoundingBoxHelper, Color, MTLLoader, OBJLoader, OrbitControls} from "three";
 import {NavigationMap} from "./classes/NavigationMap.class";
 
 declare const loadAdditionalThreeJsDependencies: Function;
@@ -52,18 +52,37 @@ class Application {
 
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 
-        this.map = new NavigationMap();
+        this.map = new NavigationMap(
+            {
+                latitude: 11.0225915,
+                longitude: 49.5688684,
+            },
+            {
+                latitude: 11.0321187,
+                longitude: 49.5767443,
+            }
+        );
 
         const url: any = window.location;
         const baseUrl: string = url.protocol + "//" + url.host + "/" + url.pathname.split('/')[1];
 
-        map.loadMapMesh(
+        this.map.loadMapMesh(
             "assets/techfak_map.obj",
             "assets/techfak_map.mtl",
             baseUrl)
             .then(() => {
 
-                this.scene.add(map.mapMesh);
+                this.scene.add(this.map.mapMesh);
+
+                this.scene.add(new BoundingBoxHelper(this.map.mapMesh, 0xff0000));
+
+                const a: MapMarker = new MapMarker(10, new Color(0xff0000));
+                const b: MapMarker = new MapMarker(10, new Color(0x00ff00));
+
+                this.scene.add(a);
+                this.scene.add(b);
+
+                b.position.set(0, 3, 0);
 
                 this.render();
             });
@@ -93,7 +112,8 @@ class Application {
 
         this.rayCaster.setFromCamera(this.mouse, this.camera);
 
-        const intersects: THREE.Intersection[] = this.rayCaster.intersectObjects(this.map.children);
+        const intersects: THREE.Intersection[] = this.rayCaster.intersectObjects(this.map.mapMesh.children[0].children);
+
 
         if (intersects.length > 0) {
 

@@ -1,19 +1,26 @@
 // TODO Introduce NavigationMap for OBJ files
 import {Group, MTLLoader, OBJLoader} from "three";
+import {EarthCoordinate} from "../interfaces/EarthCoordinate.interface";
 
 export class NavigationMap {
 
     private _mapMesh: Group;
 
-    private objLoader: OBJLoader;
+    private _objLoader: OBJLoader;
 
-    private mtlLoader: MTLLoader;
+    private _mtlLoader: MTLLoader;
 
-    constructor() {
+    private _min: EarthCoordinate;
+    private _max: EarthCoordinate;
+
+    constructor(min: EarthCoordinate, max: EarthCoordinate) {
+
+        this._min = min;
+        this._max = max;
 
         // TODO: Use DI instead
-        this.objLoader = new OBJLoader();
-        this.mtlLoader = new MTLLoader();
+        this._objLoader = new OBJLoader();
+        this._mtlLoader = new MTLLoader();
 
         this._mapMesh = new Group();
 
@@ -29,16 +36,16 @@ export class NavigationMap {
 
         return new Promise<void>((resolve, reject) => {
 
-            this.mtlLoader.setBaseUrl(baseUrl);
+            this._mtlLoader.setBaseUrl(baseUrl);
 
-            this.mtlLoader.load(pathToMaterialData,
+            this._mtlLoader.load(pathToMaterialData,
                 (loadedMtlFileMaterials: any) => {
 
                     loadedMtlFileMaterials.preload();
 
-                    this.objLoader.setMaterials(loadedMtlFileMaterials);
+                    this._objLoader.setMaterials(loadedMtlFileMaterials);
 
-                    this.objLoader.load(pathTo3dData,
+                    this._objLoader.load(pathTo3dData,
                         (loadedObjFileObject: Group) => {
 
                             this._mapMesh.add(loadedObjFileObject);
