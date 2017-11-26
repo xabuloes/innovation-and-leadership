@@ -5,6 +5,9 @@ import {LocationDeterminationService} from "./interfaces/LocationDeterminationSe
 import {inject, injectable} from "inversify";
 import "reflect-metadata";
 import {DynamicEarthCoordinate, EarthCoordinate} from "./interfaces/EarthCoordinate.interface";
+import * as $ from "jquery";
+import {RoomDatabaseConnector} from "./interfaces/RoomDatabase/RoomDatabaseConnector.interface";
+import {RoomData} from "./interfaces/RoomDatabase/RoomData.interface";
 
 /**
  *
@@ -34,6 +37,9 @@ export class FaunditApplication {
     @inject("locationDeterminationService")
     private locationDeterminationService: LocationDeterminationService;
 
+    @inject("roomDatabaseConnector")
+    private roomDatabaseConnector: RoomDatabaseConnector;
+
     constructor() {
 
         document.addEventListener("mousemove", (event) => {
@@ -43,9 +49,13 @@ export class FaunditApplication {
             this.mouse.y = -( event.clientY / window.innerHeight ) * 2 + 1;
         });
 
+        this.installEventHandlers();
+
         this.rayCaster = new THREE.Raycaster();
 
-        this.lighting = new THREE.DirectionalLight(0xffffff);
+        this.lighting = new THREE.DirectionalLight(0xffffff, 1.5);
+        this.lighting.position.set(0, 100, 0);
+
         this.scene.add(this.lighting);
 
         this.marker = new MapMarker(20, new THREE.Color("rgb(0,0,255)"));
@@ -91,6 +101,41 @@ export class FaunditApplication {
 
                 this.render();
             });
+
+    }
+
+    private installEventHandlers(): void {
+
+        $("#submit-room-search").click(() => {
+
+            const roomIdParam: any = $("#room-search-string").val();
+
+            if (typeof roomIdParam === "string") {
+                if (roomIdParam.length > 0) {
+
+                    this.roomDatabaseConnector.getRoomData(roomIdParam)
+                        .then((roomData: RoomData[]) => {
+                            // TODO
+
+                            $("#search-result-list").empty();
+
+                            roomData.forEach((roomData: RoomData) => {
+
+                                $("#search-result-list").append(
+                                    `<a href="#" class="w3-bar-item w3-button">${roomData.id} (${roomData.buildingName})</a>`
+                                );
+
+                            });
+
+
+                        });
+
+                }
+            } else {
+                // Do nothing
+            }
+
+        });
 
     }
 

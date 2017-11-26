@@ -11,12 +11,16 @@
   "license": "ISC",
   "dependencies": {
     "@types/three": "^0.84.22",
+    "@types/jquery": "3.2.16",
+    "@types/xml2js": "0.4.2",
     "three": "0.87.1",
     "ts-loader": "^2.3.7",
     "typescript": "2.6.1",
     "typedcontract": "2.0.0",
     "inversify": "4.5.2",
-    "reflect-metadata": "0.1.10"
+    "reflect-metadata": "0.1.10",
+    "jquery": "3.2.1",
+    "xml2js": "0.4.19"
   },
   "devDependencies": {
     "tslint": "5.8.0",

@@ -6,6 +6,8 @@ import * as THREE from "three";
 
 import "reflect-metadata";
 import {FakeLocationDeterminationService} from "./classes/FakeLocationDeterminationService.class";
+import {RoomDatabaseConnector} from "./interfaces/RoomDatabase/RoomDatabaseConnector.interface";
+import {UnivisRoomDatabaseConnector} from "./classes/RoomDatabase/UnivisRoomDatabase/UnivisRoomDatabaseConnector.class";
 
 
 /**
@@ -22,6 +24,7 @@ loadAdditionalThreeJsDependencies(THREE);
 const inversifyContainer: Container = new Container();
 
 inversifyContainer.bind<LocationDeterminationService>("locationDeterminationService").to(FakeLocationDeterminationService);
+inversifyContainer.bind<RoomDatabaseConnector>("roomDatabaseConnector").to(UnivisRoomDatabaseConnector);
 
 /**
  * Resolve application instance (= start application)
