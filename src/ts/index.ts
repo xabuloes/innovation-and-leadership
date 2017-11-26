@@ -5,6 +5,7 @@ import {LocationDeterminationService} from "./interfaces/LocationDeterminationSe
 import * as THREE from "three";
 
 import "reflect-metadata";
+import {FakeLocationDeterminationService} from "./classes/FakeLocationDeterminationService.class";
 
 
 /**
@@ -20,7 +21,7 @@ loadAdditionalThreeJsDependencies(THREE);
  */
 const inversifyContainer: Container = new Container();
 
-inversifyContainer.bind<LocationDeterminationService>("locationDeterminationService").to(GPSLocationDeterminationService);
+inversifyContainer.bind<LocationDeterminationService>("locationDeterminationService").to(FakeLocationDeterminationService);
 
 /**
  * Resolve application instance (= start application)

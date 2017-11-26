@@ -48,7 +48,7 @@ export class FaunditApplication {
         this.lighting = new THREE.DirectionalLight(0xffffff);
         this.scene.add(this.lighting);
 
-        this.marker = new MapMarker(5, new THREE.Color("rgb(0,0,255)"));
+        this.marker = new MapMarker(20, new THREE.Color("rgb(0,0,255)"));
         this.scene.add(this.marker);
 
         this.camera.position.set(80, 80, 80);
@@ -60,12 +60,12 @@ export class FaunditApplication {
 
         this.map = new NavigationMap(
             {
-                latitude: 11.0225915,
-                longitude: 49.5688684,
+                latitude: 49.5688684,
+                longitude: 11.0225915,
             },
             {
-                latitude: 11.0321187,
-                longitude: 49.5767443,
+                latitude: 49.5767443,
+                longitude: 11.0321187,
             }
         );
 
@@ -82,28 +82,12 @@ export class FaunditApplication {
 
                 this.scene.add(new THREE.BoundingBoxHelper(this.map.mapMesh, 0xff0000));
 
-                const red: MapMarker = new MapMarker(10, new THREE.Color(0xff0000));
-                const green: MapMarker = new MapMarker(10, new THREE.Color(0x00ff00));
-
-                this.scene.add(red);
-                this.scene.add(green);
-
                 this.locationDeterminationService.getCurrentPosition()
                     .then((position: DynamicEarthCoordinate) => {
                         console.log(position.timestamp, position.longitude, position.latitude);
+
+                        this.map.setMarkerOnLocation(position);
                     });
-
-                const boundingBoxHelper: THREE.BoxHelper = new THREE.BoxHelper(this.map.mapMesh);
-
-                boundingBoxHelper.geometry.computeBoundingBox();
-
-                const boundingBox: THREE.Box3 = boundingBoxHelper.geometry.boundingBox;
-
-                red.position.setX(boundingBox.min.x);
-                red.position.setZ(-boundingBox.min.z);
-
-                green.position.setX(boundingBox.max.x);
-                green.position.setZ(-boundingBox.max.z);
 
                 this.render();
             });
