@@ -1,13 +1,16 @@
 import * as THREE from "three";
 import {MapMarker} from "./classes/NavigationMapMarker.class";
 import {NavigationMap} from "./classes/NavigationMap.class";
-
-declare const loadAdditionalThreeJsDependencies: Function;
+import {LocationDeterminationService} from "./interfaces/LocationDeterminationService.interface";
+import {inject, injectable} from "inversify";
+import "reflect-metadata";
+import {DynamicEarthCoordinate, EarthCoordinate} from "./interfaces/EarthCoordinate.interface";
 
 /**
  *
  */
-class Application {
+@injectable()
+export class FaunditApplication {
 
     private readonly renderer = new THREE.WebGLRenderer({
         antialias: true,
@@ -28,9 +31,10 @@ class Application {
 
     private controls: THREE.OrbitControls;
 
-    constructor() {
+    @inject("locationDeterminationService")
+    private locationDeterminationService: LocationDeterminationService;
 
-        loadAdditionalThreeJsDependencies(THREE);
+    constructor() {
 
         document.addEventListener("mousemove", (event) => {
             event.preventDefault();
@@ -86,6 +90,11 @@ class Application {
 
                 b.position.set(0, 3, 0);
 
+                this.locationDeterminationService.getCurrentPosition()
+                    .then((position: DynamicEarthCoordinate) => {
+                        console.log(position.timestamp, position.longitude, position.latitude);
+                    });
+
                 this.render();
             });
 
@@ -135,7 +144,4 @@ class Application {
 
     }
 
-
 }
-
-const application: Application = new Application();

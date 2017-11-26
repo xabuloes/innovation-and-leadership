@@ -13,7 +13,10 @@
     "@types/three": "^0.84.22",
     "three": "0.87.1",
     "ts-loader": "^2.3.7",
-    "typescript": "2.6.1"
+    "typescript": "2.6.1",
+    "typedcontract": "2.0.0",
+    "inversify": "4.5.2",
+    "reflect-metadata": "0.1.10"
   },
   "devDependencies": {
     "tslint": "5.8.0",

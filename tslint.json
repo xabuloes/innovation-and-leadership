@@ -5,7 +5,6 @@
       true,
       "array"
     ],
-    "boolean-trivia": true,
     "class-name": true,
     "comment-format": [
       true,
@@ -15,7 +14,6 @@
       true,
       "ignore-same-line"
     ],
-    "debug-assert": true,
     "indent": [
       true,
       "spaces"
@@ -30,14 +28,6 @@
       false,
       "LF"
     ],
-    "next-line": [
-      true,
-      "check-catch",
-      "check-else"
-    ],
-    "no-bom": true,
-    "no-in-operator": true,
-    "no-increment-decrement": true,
     "no-inferrable-types": true,
     "no-internal-module": true,
     "no-null-keyword": true,
@@ -47,10 +37,8 @@
       "ignore-template-strings",
       "ignore-comments"
     ],
-    "no-type-assertion-whitespace": true,
     "no-var-keyword": true,
     "object-literal-shorthand": true,
-    "object-literal-surrounding-space": true,
     "one-line": [
       true,
       "check-open-brace",
@@ -69,7 +57,6 @@
     ],
     "space-within-parens": false,
     "triple-equals": true,
-    "type-operator-spacing": true,
     "typedef-whitespace": [
       true,
       {

@@ -2,7 +2,7 @@ const TSLintWebpackPlugin = require("tslint-webpack-plugin");
 
 module.exports = {
     devtool: "inline-source-map",
-    entry: "./src/ts/Application.class.ts",
+    entry: "./src/ts/index.ts",
     output: {
         filename: "./dist/bundle.js"
     },
