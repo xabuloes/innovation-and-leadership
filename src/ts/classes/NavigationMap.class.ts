@@ -53,7 +53,7 @@ export class NavigationMap {
                             resolve();
                         },
                         (xhr: any) => {
-
+                            // TODO
                         },
                         (error: any) => {
                             reject();
@@ -61,7 +61,7 @@ export class NavigationMap {
 
                 },
                 () => {
-
+                    // TODO
                 },
                 (error: any) => {
                     reject();
