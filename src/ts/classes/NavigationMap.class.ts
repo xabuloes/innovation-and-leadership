@@ -49,6 +49,7 @@ export class NavigationMap {
 
         return new Promise<void>((resolve, reject) => {
 
+            // TODO: Inject MTL loader
             this._mtlLoader.setBaseUrl(baseUrl);
 
             this._mtlLoader.load(pathToMaterialData,
@@ -56,6 +57,7 @@ export class NavigationMap {
 
                     loadedMtlFileMaterials.preload();
 
+                    // TODO: Inject OBJ loader
                     this._objLoader.setMaterials(loadedMtlFileMaterials);
 
                     this._objLoader.load(pathTo3dData,
@@ -84,6 +86,12 @@ export class NavigationMap {
         });
     }
 
+    /**
+     * Map given earth coordinate onto the corresponding 3D position on the 3D map.
+     *
+     * @param {EarthCoordinate} location
+     * @returns {Vector2}
+     */
     private getWorldPositionFromCoordinate(location: EarthCoordinate): Vector2 {
 
         const boundingBoxHelper: BoxHelper = new BoxHelper(this.mapMesh);
