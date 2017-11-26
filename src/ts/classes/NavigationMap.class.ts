@@ -6,7 +6,7 @@ import {Contract} from "typedcontract";
 
 export class NavigationMap {
 
-    private _mapMesh: Group;
+    private _mapMesh: Object3D;
 
     private _objLoader: OBJLoader;
 

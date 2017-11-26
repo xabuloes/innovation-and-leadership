@@ -2,25 +2,18 @@ import {LocationDeterminationService} from "../interfaces/LocationDeterminationS
 import {DynamicEarthCoordinate} from "../interfaces/EarthCoordinate.interface";
 import {injectable} from "inversify";
 import "reflect-metadata";
+import {PointsOfInterests} from "../map_data/techfak/PointsOfInterest.list";
+import {PointOfInterest} from "../interfaces/PointOfInterest.interface";
 
 @injectable()
 export class FakeLocationDeterminationService implements LocationDeterminationService {
 
-    private fakeCoordinates: any;
+    private _fakeLocations: any;
 
     constructor() {
-        // Do nothing
 
-        this.fakeCoordinates = {
-            tentorium: {
-                longitude: 11.028486,
-                latitude: 49.573727,
-            },
-            faps: {
-                longitude: 11.025575,
-                latitude: 49.573981,
-            }
-        };
+        // Use fixed POI locations as set of locations to choose from randomly
+        this._fakeLocations = PointsOfInterests.map((pointOfInterest: PointOfInterest) => pointOfInterest.location);
 
     }
 
@@ -29,7 +22,7 @@ export class FakeLocationDeterminationService implements LocationDeterminationSe
             resolve({
                 timestamp: Math.round((new Date()).getTime() / 1000),
                 // Deliver fake TechFak coordinates:
-                ...this.fakeCoordinates.faps
+                ...this._fakeLocations[0] // TODO: Make random
             });
         });
     }
