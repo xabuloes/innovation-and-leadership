@@ -1,5 +1,5 @@
 // TODO Introduce NavigationMap for OBJ files
-import {Box3, BoxHelper, Color, Group, MTLLoader, Object3D, OBJLoader} from "three";
+import {Box3, BoxHelper, Color, Group, MTLLoader, Object3D, OBJLoader, Vector2} from "three";
 import {EarthCoordinate} from "../interfaces/EarthCoordinate.interface";
 import {MapMarker} from "./NavigationMapMarker.class";
 import {Contract} from "typedcontract";
@@ -21,7 +21,7 @@ export class NavigationMap {
     private _longitudeDelta: number;
     private _latitudeDelta: number;
 
-    private boundingBox: Box3;
+    private _boundingBox: Box3;
 
     constructor(min: EarthCoordinate, max: EarthCoordinate) {
 
@@ -81,43 +81,25 @@ export class NavigationMap {
                 });
 
 
-        }).then(() => {
-
-            // Do map calculations
-            const red: MapMarker = new MapMarker(40, new Color(0xff0000));
-            const green: MapMarker = new MapMarker(40, new Color(0x00ff00));
-
-            this.mapMesh.add(red);
-            this.mapMesh.add(green);
-
-            const boundingBoxHelper: BoxHelper = new BoxHelper(this.mapMesh);
-
-            boundingBoxHelper.geometry.computeBoundingBox();
-
-            this.boundingBox = boundingBoxHelper.geometry.boundingBox;
-
-            red.position.setX(this.boundingBox.min.x);
-            red.position.setZ(-this.boundingBox.min.z);
-
-            green.position.setX(this.boundingBox.max.x);
-            green.position.setZ(-this.boundingBox.max.z);
-
-            this._worldDx = Math.abs(this.boundingBox.max.x - this.boundingBox.min.x);
-            this._worldDz = Math.abs((-this.boundingBox.max.z) - (-this.boundingBox.min.z));
-
-            this._longitudeDelta = Math.abs(this._max.longitude - this._min.longitude);
-            this._latitudeDelta = Math.abs(this._max.latitude - this._min.latitude);
-
         });
-
     }
 
-    public setMarkerOnLocation(location: EarthCoordinate): void {
+    private getWorldPositionFromCoordinate(location: EarthCoordinate): Vector2 {
 
-        const newMarker: MapMarker = new MapMarker(20, new Color(0xff0000));
+        const boundingBoxHelper: BoxHelper = new BoxHelper(this.mapMesh);
 
-        const minWorldCoordinateX: number = (+this.boundingBox.min.x);
-        const minWorldCoordinateZ: number = (-this.boundingBox.min.z);
+        boundingBoxHelper.geometry.computeBoundingBox();
+
+        this._boundingBox = boundingBoxHelper.geometry.boundingBox;
+
+        this._worldDx = Math.abs(this._boundingBox.max.x - this._boundingBox.min.x);
+        this._worldDz = Math.abs((-this._boundingBox.max.z) - (-this._boundingBox.min.z));
+
+        this._longitudeDelta = Math.abs(this._max.longitude - this._min.longitude);
+        this._latitudeDelta = Math.abs(this._max.latitude - this._min.latitude);
+
+        const minWorldCoordinateX: number = (+this._boundingBox.min.x);
+        const minWorldCoordinateZ: number = (-this._boundingBox.min.z);
 
         const worldCoordinatePerLongitudeUnit: number = this._worldDx / this._longitudeDelta;
         const worldCoordinatePerLatitudeUnit: number = this._worldDz / this._latitudeDelta;
@@ -125,13 +107,38 @@ export class NavigationMap {
         const latRelativeToMinimumLat: number = location.latitude - this._min.latitude;
         const lonRelativeToMinimumLon: number = location.longitude - this._min.longitude;
 
-        this.mapMesh.add(newMarker);
-
         const relWorldPositionToMinimumX: number = lonRelativeToMinimumLon * worldCoordinatePerLongitudeUnit;
         const relWorldPositionToMinimumZ: number = latRelativeToMinimumLat * worldCoordinatePerLatitudeUnit;
 
-        newMarker.position.setX(minWorldCoordinateX + relWorldPositionToMinimumX);
-        newMarker.position.setZ(minWorldCoordinateZ - relWorldPositionToMinimumZ);
+        return new Vector2(minWorldCoordinateX + relWorldPositionToMinimumX, minWorldCoordinateZ - relWorldPositionToMinimumZ);
+    }
+
+    /**
+     *
+     * @param {EarthCoordinate} location
+     */
+    public setMarkerOnLocation(location: EarthCoordinate): void {
+
+        /**
+         * Setting up preconditions for coordinate value
+         */
+        (new Contract()).In(location.longitude)
+            .isGreaterOrEqualThan(this._min.longitude)
+            .isLessOrEqualThan(this._max.longitude);
+        (new Contract()).In(location.latitude)
+            .isGreaterOrEqualThan(this._min.latitude)
+            .isLessOrEqualThan(this._max.latitude);
+
+        // TODO: Extract some of those static calculations
+
+        const newMarker: MapMarker = new MapMarker(20, new Color(0xff0000));
+
+        this.mapMesh.add(newMarker);
+
+        const positionXY: Vector2 = this.getWorldPositionFromCoordinate(location);
+
+        newMarker.position.setX(positionXY.x);
+        newMarker.position.setZ(positionXY.y); // Y value maps to 3D Z value!
 
     }
 
