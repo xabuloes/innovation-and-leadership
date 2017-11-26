@@ -1,5 +1,5 @@
 // TODO Introduce NavigationMap for OBJ files
-import {Group, MTLLoader, OBJLoader} from "three";
+import {Group, MTLLoader, Object3D, OBJLoader} from "three";
 import {EarthCoordinate} from "../interfaces/EarthCoordinate.interface";
 
 export class NavigationMap {
@@ -22,7 +22,7 @@ export class NavigationMap {
         this._objLoader = new OBJLoader();
         this._mtlLoader = new MTLLoader();
 
-        this._mapMesh = new Group();
+        this._mapMesh = new Object3D();
 
     }
 

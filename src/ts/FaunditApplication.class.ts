@@ -82,18 +82,28 @@ export class FaunditApplication {
 
                 this.scene.add(new THREE.BoundingBoxHelper(this.map.mapMesh, 0xff0000));
 
-                const a: MapMarker = new MapMarker(10, new THREE.Color(0xff0000));
-                const b: MapMarker = new MapMarker(10, new THREE.Color(0x00ff00));
+                const red: MapMarker = new MapMarker(10, new THREE.Color(0xff0000));
+                const green: MapMarker = new MapMarker(10, new THREE.Color(0x00ff00));
 
-                this.scene.add(a);
-                this.scene.add(b);
-
-                b.position.set(0, 3, 0);
+                this.scene.add(red);
+                this.scene.add(green);
 
                 this.locationDeterminationService.getCurrentPosition()
                     .then((position: DynamicEarthCoordinate) => {
                         console.log(position.timestamp, position.longitude, position.latitude);
                     });
+
+                const boundingBoxHelper: THREE.BoxHelper = new THREE.BoxHelper(this.map.mapMesh);
+
+                boundingBoxHelper.geometry.computeBoundingBox();
+
+                const boundingBox: THREE.Box3 = boundingBoxHelper.geometry.boundingBox;
+
+                red.position.setX(boundingBox.min.x);
+                red.position.setZ(-boundingBox.min.z);
+
+                green.position.setX(boundingBox.max.x);
+                green.position.setZ(-boundingBox.max.z);
 
                 this.render();
             });
