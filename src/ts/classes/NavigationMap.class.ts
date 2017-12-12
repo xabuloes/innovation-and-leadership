@@ -125,7 +125,9 @@ export class NavigationMap {
      *
      * @param {EarthCoordinate} location
      */
-    public setMarkerOnLocation(location: EarthCoordinate): void {
+    public setMarkerOnLocation(location: EarthCoordinate): MapMarker {
+
+        console.log(location);
 
         /**
          * Setting up preconditions for coordinate value
@@ -147,6 +149,26 @@ export class NavigationMap {
 
         newMarker.position.setX(positionXY.x);
         newMarker.position.setZ(positionXY.y); // Y value maps to 3D Z value!
+
+        return newMarker;
+    }
+
+    /**
+     * TODO
+     *
+     * @param {EarthCoordinate} location
+     * @returns {boolean}
+     */
+    public isLocationOnMap(location: EarthCoordinate): boolean {
+
+        if ((location.longitude >= this._min.longitude && location.longitude < this._max.longitude)
+            &&
+            (location.latitude >= this._min.latitude && location.latitude < this._max.latitude)) {
+
+            return true;
+        } else {
+            return false;
+        }
 
     }
 

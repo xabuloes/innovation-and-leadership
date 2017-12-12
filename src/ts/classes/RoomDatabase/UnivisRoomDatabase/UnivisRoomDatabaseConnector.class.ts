@@ -38,13 +38,18 @@ export class UnivisRoomDatabaseConnector implements RoomDatabaseConnector {
 
                         const roomsFoundRawData: any[] = result.UnivIS.Room;
 
+                        // TODO: Is this an error?
+                        if (typeof roomsFoundRawData === "undefined" || roomsFoundRawData === null) {
+                            return resolve([]);
+                        }
+
                         let roomsFound: RoomData[] = roomsFoundRawData.map((roomDataRaw: any) => {
                             return {
                                 id: roomDataRaw.roomno,
                                 buildingName: roomDataRaw.famos_bauwerk,
                                 location: {
-                                    latitude: roomDataRaw.entr_east,
-                                    longitude: roomDataRaw.entr_north,
+                                    latitude: Number(<string>roomDataRaw.entr_north[0]),
+                                    longitude: Number(<string>roomDataRaw.entr_east[0]),
                                 }
                             };
                         });
@@ -52,7 +57,7 @@ export class UnivisRoomDatabaseConnector implements RoomDatabaseConnector {
                         // Filter invalid room data
                         roomsFound = roomsFound.filter((roomData) => typeof roomData.id !== "undefined");
 
-                        resolve(roomsFound);
+                        return resolve(roomsFound);
 
                     });
 

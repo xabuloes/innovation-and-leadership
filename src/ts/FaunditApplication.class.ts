@@ -34,6 +34,8 @@ export class FaunditApplication {
 
     private controls: THREE.OrbitControls;
 
+    private currentAvailableRoomData: RoomData[];
+
     @inject("locationDeterminationService")
     private locationDeterminationService: LocationDeterminationService;
 
@@ -104,6 +106,67 @@ export class FaunditApplication {
 
     }
 
+    private showOnMap(roomData: RoomData): Promise<void> {
+
+        return new Promise((resolve, reject) => {
+
+            if (!this.map.isLocationOnMap(roomData.location)) {
+                alert(`Room "${roomData.id}" is not part of the map!`);
+                return resolve();
+            } else {
+
+                const marker: MapMarker = this.map.setMarkerOnLocation(roomData.location);
+
+                this.slowlyLookAt(marker.position, 2500)
+                    .then(() => {
+
+                        return resolve();
+                    });
+
+            }
+
+        });
+    }
+
+    private slowlyLookAt(position: THREE.Vector3, duration: number): Promise<void> {
+
+        return new Promise((resolve, reject) => {
+
+            // backup original rotation
+            const startRotation: THREE.Euler = new THREE.Euler().copy(this.camera.rotation);
+
+            // final rotation (with lookAt)
+            this.camera.lookAt(position);
+            const endRotation: THREE.Euler = new THREE.Euler().copy(this.camera.rotation);
+
+            // revert to original rotation
+            this.camera.rotation.copy(startRotation);
+
+            const camera: THREE.PerspectiveCamera = this.camera;
+
+            const rotation: THREE.Euler = new THREE.Euler().copy(startRotation);
+
+            /* tslint:disable */
+            new TWEEN.Tween(rotation)
+                .to(endRotation, duration)
+                .easing(TWEEN.Easing.Quadratic.Out)
+                .start()
+                .onUpdate(function () {
+                    camera.rotation.x = rotation.x;
+                    camera.rotation.y = rotation.y;
+                    camera.rotation.z = rotation.z;
+
+                    console.log(camera.rotation, rotation, endRotation);
+                })
+                .onComplete(() => {
+                    resolve();
+                });
+            /* tslint:enable */
+
+        });
+
+    }
+
     private installEventHandlers(): void {
 
         $("#submit-room-search").click(() => {
@@ -119,11 +182,20 @@ export class FaunditApplication {
 
                             $("#search-result-list").empty();
 
+                            // TODO: Do we really need this?
+                            this.currentAvailableRoomData = roomData;
+
                             roomData.forEach((roomData: RoomData) => {
 
-                                $("#search-result-list").append(
-                                    `<a href="#" class="w3-bar-item w3-button">${roomData.id} (${roomData.buildingName})</a>`
-                                );
+                                const newElement: JQuery = $(`<a href="#" class="w3-bar-item w3-button">${roomData.id} (${roomData.buildingName})</a>`);
+                                newElement.bind("click", () => {
+                                    this.showOnMap(roomData)
+                                        .then(() => {
+                                            // TODO: Display room data
+                                        });
+                                });
+
+                                $("#search-result-list").append(newElement);
 
                             });
 
@@ -147,6 +219,8 @@ export class FaunditApplication {
 
     private render() {
         this.renderer.render(this.scene, this.camera);
+
+        TWEEN.update();
 
         requestAnimationFrame(() => {
             this.render();
