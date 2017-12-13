@@ -3,6 +3,7 @@ import {Box3, BoxHelper, Color, Group, MTLLoader, Object3D, OBJLoader, Vector2, 
 import {EarthCoordinate} from "../interfaces/EarthCoordinate.interface";
 import {MapMarker} from "./NavigationMapMarker.class";
 import {Contract} from "typedcontract";
+import {RoomData} from "../interfaces/RoomDatabase/RoomData.interface";
 
 export class NavigationMap {
 
@@ -125,7 +126,7 @@ export class NavigationMap {
      *
      * @param {EarthCoordinate} location
      */
-    public setMarkerOnLocation(location: EarthCoordinate, color?: number): MapMarker {
+    public setMarker(location: EarthCoordinate, color?: number): MapMarker<void> {
 
         color = color || 0xff0000;
 
@@ -143,7 +144,43 @@ export class NavigationMap {
 
         // TODO: Extract some of those static calculations
 
-        const newMarker: MapMarker = new MapMarker(20, new Color(color));
+        const newMarker: MapMarker<void> = new MapMarker<void>(undefined, 20, new Color(color));
+
+        this.mapMesh.add(newMarker);
+
+        const positionXY: Vector2 = this.getWorldPositionFromCoordinate(location);
+
+        newMarker.position.setX(positionXY.x);
+        newMarker.position.setZ(positionXY.y); // Y value maps to 3D Z value!
+
+        newMarker.startOscilating();
+
+        return newMarker;
+    }
+
+    /**
+     *
+     * @param {EarthCoordinate} location
+     */
+    public setRoomMarker(location: EarthCoordinate, data: RoomData /* TODO: Make generic? */, color?: number): MapMarker<RoomData> {
+
+        color = color || 0xff0000;
+
+        console.log(location);
+
+        /**
+         * Setting up preconditions for coordinate value
+         */
+        (new Contract()).In(location.longitude)
+            .isGreaterOrEqualThan(this._min.longitude)
+            .isLessOrEqualThan(this._max.longitude);
+        (new Contract()).In(location.latitude)
+            .isGreaterOrEqualThan(this._min.latitude)
+            .isLessOrEqualThan(this._max.latitude);
+
+        // TODO: Extract some of those static calculations
+
+        const newMarker: MapMarker<RoomData> = new MapMarker<RoomData>(data, 20, new Color(color));
 
         this.mapMesh.add(newMarker);
 
@@ -162,7 +199,7 @@ export class NavigationMap {
      *
      * @param {MapMarker} markerToRemove
      */
-    public removeMapMarker(markerToRemove: MapMarker): void {
+    public removeMapMarker(markerToRemove: MapMarker<RoomData>): void {
 
         this.mapMesh.remove(markerToRemove);
     }

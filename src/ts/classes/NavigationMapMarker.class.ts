@@ -1,10 +1,12 @@
 import {Color, ConeGeometry, Mesh, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, Vector3} from "three";
 
-export class MapMarker extends Mesh {
+export class MapMarker<T> extends Mesh {
 
     private animation: TWEEN.Tween;
 
-    constructor(height?: number, color?: Color) {
+    private data: T;
+
+    constructor(data: T, height?: number, color?: Color) {
         super();
 
         height = height || 20;
@@ -16,6 +18,8 @@ export class MapMarker extends Mesh {
         this.position.setY(height / 2);
         this.rotateZ(Math.PI);
 
+        this.data = data;
+
     }
 
     public startOscilating(): void {
@@ -26,7 +30,7 @@ export class MapMarker extends Mesh {
         endPositionOsci.y += 5;
 
         /* tslint:disable */
-        const self: MapMarker = this;
+        const self: MapMarker<T> = this;
 
         const position: Vector3 = new Vector3().copy(self.position);
 
@@ -50,4 +54,9 @@ export class MapMarker extends Mesh {
         }
 
     }
+
+    public getData(): T {
+        return this.data;
+    }
+
 }

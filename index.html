@@ -37,23 +37,35 @@
             opacity: 0.7;
         }
 
-        #mySidebar {
+        #search-sidebar {
             opacity: 0.9;
+        }
+
+        #room-sidebar {
+            opacity: 1.0;
+        }
+
+        #search-content {
+            margin: 10px;
+        }
+
+        #room-info-content {
+            margin: 10px;
         }
 
     </style>
 </head>
 <body>
 
-<div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+<div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="search-sidebar">
 
-    <div>
+    <div id="search-content">
 
         <button class="w3-bar-item w3-button w3-large"
-                onclick="w3_close()">&times;
+                onclick="closeSearchSidebar()">&times;
         </button>
 
-        <form style="margin: 15px;">
+        <form>
             <input id="room-search-string" placeholder="Search for room ..."/>
             <button id="submit-room-search">Search</button>
         </form>
@@ -65,23 +77,73 @@
 
 </div>
 
+<div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="room-sidebar">
+
+    <button class="w3-bar-item w3-button w3-large"
+            onclick="closeRoomSidebar()">&times;
+    </button>
+
+    <div id="room-info-content">
+
+        <h2 id="room-info-name"></h2>
+
+        TODO
+
+    </div>
+
+</div>
+
 <div id="main">
     <h1 id="pointer-label">-</h1>
 
-    <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+    <button id="openSearchSidebar" class="w3-button w3-teal w3-xlarge" onclick="openSearchSidebar()">&#9776;</button>
 
     <script>
-        function w3_open() {
-            document.getElementById("main").style.marginLeft = "25%";
-            document.getElementById("mySidebar").style.width = "25%";
-            document.getElementById("mySidebar").style.display = "block";
-            document.getElementById("openNav").style.display = 'none';
+        var panelsActive = 0;
+
+        function openSearchSidebar() {
+
+
+            if (panelsActive === 0) document.getElementById("main").style.marginLeft = "25%";
+            document.getElementById("search-sidebar").style.width = "25%";
+            document.getElementById("search-sidebar").style.display = "block";
+
+            if (panelsActive === 0) document.getElementById("openSearchSidebar").style.display = 'none';
+
+            panelsActive++;
+
+            console.log(panelsActive);
         }
 
-        function w3_close() {
-            document.getElementById("main").style.marginLeft = "0%";
-            document.getElementById("mySidebar").style.display = "none";
-            document.getElementById("openNav").style.display = "inline-block";
+        function closeSearchSidebar() {
+            if (panelsActive === 1) document.getElementById("main").style.marginLeft = "0%";
+            document.getElementById("search-sidebar").style.display = "none";
+            if (panelsActive === 1) document.getElementById("openSearchSidebar").style.display = "inline-block";
+
+            panelsActive--;
+
+            console.log(panelsActive);
+        }
+
+        function openRoomSidebar() {
+            if (panelsActive === 0) document.getElementById("main").style.marginLeft = "25%";
+            document.getElementById("room-sidebar").style.width = "25%";
+            document.getElementById("room-sidebar").style.display = "block";
+            if (panelsActive === 0) document.getElementById("openRoomSidebar").style.display = 'none';
+
+            panelsActive++;
+
+            console.log(panelsActive);
+        }
+
+        function closeRoomSidebar() {
+            if (panelsActive === 1) document.getElementById("main").style.marginLeft = "0%";
+            document.getElementById("room-sidebar").style.display = "none";
+            if (panelsActive === 1) document.getElementById("openRoomSidebar").style.display = "inline-block";
+
+            panelsActive--;
+
+            console.log(panelsActive);
         }
     </script>
 </div>

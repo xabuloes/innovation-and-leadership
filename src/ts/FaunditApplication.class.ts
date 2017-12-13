@@ -9,6 +9,8 @@ import * as $ from "jquery";
 import {RoomDatabaseConnector} from "./interfaces/RoomDatabase/RoomDatabaseConnector.interface";
 import {RoomData} from "./interfaces/RoomDatabase/RoomData.interface";
 
+declare const openRoomSidebar: Function;
+
 /**
  *
  */
@@ -24,7 +26,7 @@ export class FaunditApplication {
     private readonly camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 10000);
     private readonly mouse: THREE.Vector2 = new THREE.Vector2(0, 0);
 
-    private marker: MapMarker;
+    private marker: MapMarker<RoomData>;
 
     private map: NavigationMap;
 
@@ -36,7 +38,7 @@ export class FaunditApplication {
 
     private currentAvailableRoomData: RoomData[];
 
-    private markers: MapMarker[];
+    private roomMarkers: MapMarker<RoomData>[];
 
     @inject("locationDeterminationService")
     private locationDeterminationService: LocationDeterminationService;
@@ -51,6 +53,39 @@ export class FaunditApplication {
 
             this.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
             this.mouse.y = -( event.clientY / window.innerHeight ) * 2 + 1;
+        });
+
+        document.addEventListener("mousedown", (event) => {
+            const mouse: THREE.Vector2 = new THREE.Vector2(0, 0);
+
+            mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+            mouse.y = -( event.clientY / window.innerHeight ) * 2 + 1;
+
+            this.rayCaster.setFromCamera(mouse, this.camera);
+            const intersects = this.rayCaster.intersectObjects(this.roomMarkers);
+            if (intersects.length > 0) {
+
+                const marker: MapMarker<RoomData> = <MapMarker<RoomData>>intersects[0].object;
+
+                const roomData: RoomData = marker.getData();
+
+                if (roomData !== null) {
+
+                    openRoomSidebar();
+
+                    const roomName: any = document.getElementById("room-info-name");
+
+                    roomName.innerText = roomData.id;
+
+                } else {
+                    alert("No room information available!");
+                }
+
+
+            } else {
+                // TODO
+            }
+
         });
 
         this.installEventHandlers();
@@ -79,7 +114,7 @@ export class FaunditApplication {
             }
         );
 
-        this.markers = [];
+        this.roomMarkers = [];
 
         const url: any = window.location;
         const baseUrl: string = url.protocol + "//" + url.host + "/" + url.pathname.split("/")[1];
@@ -94,11 +129,8 @@ export class FaunditApplication {
 
                 this.locationDeterminationService.getCurrentPosition()
                     .then((position: DynamicEarthCoordinate) => {
-                        console.log(position.timestamp, position.longitude, position.latitude);
 
-                        const newMarker: MapMarker = this.map.setMarkerOnLocation(position, 0x0000ff);
-
-                        this.markers.push(newMarker);
+                        const newMarker: MapMarker<void> = this.map.setMarker(position, 0x0000ff);
 
                         this.camera.lookAt(newMarker.position);
                     });
@@ -117,7 +149,9 @@ export class FaunditApplication {
                 return resolve();
             } else {
 
-                const marker: MapMarker = this.map.setMarkerOnLocation(roomData.location);
+                const marker: MapMarker<RoomData> = this.map.setRoomMarker(roomData.location, roomData);
+
+                this.roomMarkers.push(marker);
 
                 this.slowlyLookAt(marker.position, 2500)
                     .then(() => {
@@ -158,7 +192,6 @@ export class FaunditApplication {
                     camera.rotation.y = rotation.y;
                     camera.rotation.z = rotation.z;
 
-                    console.log(camera.rotation, rotation, endRotation);
                 })
                 .onComplete(() => {
                     resolve();
