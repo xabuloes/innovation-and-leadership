@@ -23,13 +23,26 @@
             height: 100%;
             width: 100%;
         }
+
+        #main {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999999;
+
+            background: #ffffff;
+
+            width: 100%;
+
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body>
 
 <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
     <button class="w3-bar-item w3-button w3-large"
-            onclick="w3_close()">Close &times;
+            onclick="w3_close()">&times;
     </button>
 
     <form style="margin: 15px;">
@@ -38,7 +51,6 @@
     </form>
 
     <div id="search-result-list">
-
     </div>
 
 </div>

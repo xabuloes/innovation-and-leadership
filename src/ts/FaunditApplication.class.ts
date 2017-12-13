@@ -36,6 +36,8 @@ export class FaunditApplication {
 
     private currentAvailableRoomData: RoomData[];
 
+    private markers: MapMarker[];
+
     @inject("locationDeterminationService")
     private locationDeterminationService: LocationDeterminationService;
 
@@ -60,13 +62,9 @@ export class FaunditApplication {
 
         this.scene.add(this.lighting);
 
-        this.marker = new MapMarker(20, new THREE.Color("rgb(0,0,255)"));
-        this.scene.add(this.marker);
-
-        this.camera.position.set(80, 80, 80);
+        this.camera.position.set(180, 80, 80);
         this.renderer.setSize(innerWidth, innerHeight);
         this.renderer.setClearColor(new THREE.Color("rgb(0,0,0)"));
-        this.camera.lookAt(<THREE.Vector3>{x: 0, y: 0, z: 0});
 
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 
@@ -81,6 +79,8 @@ export class FaunditApplication {
             }
         );
 
+        this.markers = [];
+
         const url: any = window.location;
         const baseUrl: string = url.protocol + "//" + url.host + "/" + url.pathname.split("/")[1];
 
@@ -92,13 +92,15 @@ export class FaunditApplication {
 
                 this.scene.add(this.map.mapMesh);
 
-                this.scene.add(new THREE.BoundingBoxHelper(this.map.mapMesh, 0xff0000));
-
                 this.locationDeterminationService.getCurrentPosition()
                     .then((position: DynamicEarthCoordinate) => {
                         console.log(position.timestamp, position.longitude, position.latitude);
 
-                        this.map.setMarkerOnLocation(position);
+                        const newMarker: MapMarker = this.map.setMarkerOnLocation(position, 0x0000ff);
+
+                        this.markers.push(newMarker);
+
+                        this.camera.lookAt(newMarker.position);
                     });
 
                 this.render();
@@ -185,20 +187,27 @@ export class FaunditApplication {
                             // TODO: Do we really need this?
                             this.currentAvailableRoomData = roomData;
 
-                            roomData.forEach((roomData: RoomData) => {
+                            if (roomData.length === 0) {
 
-                                const newElement: JQuery = $(`<a href="#" class="w3-bar-item w3-button">${roomData.id} (${roomData.buildingName})</a>`);
-                                newElement.bind("click", () => {
-                                    this.showOnMap(roomData)
-                                        .then(() => {
-                                            // TODO: Display room data
-                                        });
+                                $("#search-result-list").append(`<li>No rooms found.</li>`);
+
+                            } else {
+
+                                roomData.forEach((roomData: RoomData) => {
+
+                                    const newElement: JQuery = $(`<a href="#" class="w3-bar-item w3-button">${roomData.id} (${roomData.buildingName})</a>`);
+                                    newElement.bind("click", () => {
+                                        this.showOnMap(roomData)
+                                            .then(() => {
+                                                // TODO: Display room data
+                                            });
+                                    });
+
+                                    $("#search-result-list").append(newElement);
+
                                 });
 
-                                $("#search-result-list").append(newElement);
-
-                            });
-
+                            }
 
                         });
 

@@ -1,5 +1,5 @@
 // TODO Introduce NavigationMap for OBJ files
-import {Box3, BoxHelper, Color, Group, MTLLoader, Object3D, OBJLoader, Vector2} from "three";
+import {Box3, BoxHelper, Color, Group, MTLLoader, Object3D, OBJLoader, Vector2, Vector3} from "three";
 import {EarthCoordinate} from "../interfaces/EarthCoordinate.interface";
 import {MapMarker} from "./NavigationMapMarker.class";
 import {Contract} from "typedcontract";
@@ -125,7 +125,9 @@ export class NavigationMap {
      *
      * @param {EarthCoordinate} location
      */
-    public setMarkerOnLocation(location: EarthCoordinate): MapMarker {
+    public setMarkerOnLocation(location: EarthCoordinate, color?: number): MapMarker {
+
+        color = color || 0xff0000;
 
         console.log(location);
 
@@ -141,7 +143,7 @@ export class NavigationMap {
 
         // TODO: Extract some of those static calculations
 
-        const newMarker: MapMarker = new MapMarker(20, new Color(0xff0000));
+        const newMarker: MapMarker = new MapMarker(20, new Color(color));
 
         this.mapMesh.add(newMarker);
 
@@ -150,7 +152,19 @@ export class NavigationMap {
         newMarker.position.setX(positionXY.x);
         newMarker.position.setZ(positionXY.y); // Y value maps to 3D Z value!
 
+        newMarker.startOscilating();
+
         return newMarker;
+    }
+
+    /**
+     * TODO
+     *
+     * @param {MapMarker} markerToRemove
+     */
+    public removeMapMarker(markerToRemove: MapMarker): void {
+
+        this.mapMesh.remove(markerToRemove);
     }
 
     /**
@@ -169,6 +183,13 @@ export class NavigationMap {
         } else {
             return false;
         }
+
+    }
+
+    public get3DPositionFromCoordinate(location: EarthCoordinate): Vector3 {
+
+        // TODO
+        throw new Error("Not implemented yet");
 
     }
 

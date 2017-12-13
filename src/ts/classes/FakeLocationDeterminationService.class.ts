@@ -11,18 +11,16 @@ export class FakeLocationDeterminationService implements LocationDeterminationSe
     private _fakeLocations: any;
 
     constructor() {
-
-        // Use fixed POI locations as set of locations to choose from randomly
-        this._fakeLocations = PointsOfInterests.map((pointOfInterest: PointOfInterest) => pointOfInterest.location);
-
+        // TODO
     }
 
     public getCurrentPosition(): Promise<DynamicEarthCoordinate> {
         return new Promise<DynamicEarthCoordinate>((resolve) => {
-            resolve({
+            resolve(<DynamicEarthCoordinate>{
                 timestamp: Math.round((new Date()).getTime() / 1000),
                 // Deliver fake TechFak coordinates:
-                ...this._fakeLocations[0] // TODO: Make random
+                longitude: 11.030513,
+                latitude: 49.573643
             });
         });
     }
