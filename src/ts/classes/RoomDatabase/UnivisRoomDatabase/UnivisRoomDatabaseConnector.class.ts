@@ -48,7 +48,30 @@ export class UnivisRoomDatabaseConnector implements RoomDatabaseConnector {
                                     return resolve([]);
                                 }
 
+                                console.log(roomsFoundRawData);
+
                                 let roomsFound: RoomData[] = roomsFoundRawData.map((roomDataRaw: any) => {
+
+                                    let hasBeamer = false,
+                                        hasAudio = false,
+                                        hasBoard = false,
+                                        capacity = 0;
+
+                                    if (roomDataRaw.beam && roomDataRaw.beam.indexOf("ja") !== -1) {
+                                        hasBeamer = true;
+                                    }
+
+                                    if (roomDataRaw.audio && roomDataRaw.audio.indexOf("ja") !== -1) {
+                                        hasAudio = true;
+                                    }
+
+                                    if (roomDataRaw.tafel && roomDataRaw.tafel.indexOf("ja") !== -1) {
+                                        hasBoard = true;
+                                    }
+
+                                    if (roomDataRaw.size && roomDataRaw.size.length > 0) {
+                                        capacity = Number(<string>roomDataRaw.size[0]);
+                                    }
 
                                     const test: RoomData = {
                                         id: roomDataRaw.roomno,
@@ -56,7 +79,13 @@ export class UnivisRoomDatabaseConnector implements RoomDatabaseConnector {
                                         location: {
                                             latitude: 0xdeadbeef,
                                             longitude: 0xdeadbeef,
-                                        }
+                                        },
+                                        fullAddress: roomDataRaw.address,
+                                        hasAudio,
+                                        hasBeamer,
+                                        hasBoard,
+                                        description: roomDataRaw.description,
+                                        capacity,
                                     };
 
                                     if (typeof roomDataRaw.entr_north !== "undefined" && roomDataRaw.entr_north !== null) {

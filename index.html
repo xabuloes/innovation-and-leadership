@@ -53,6 +53,10 @@
             margin: 10px;
         }
 
+        #room-info-building {
+            color: #aaaaaa;
+        }
+
     </style>
 </head>
 <body>
@@ -87,7 +91,15 @@
 
         <h2 id="room-info-name"></h2>
 
-        TODO
+        <h3 id="room-info-building"></h3>
+
+        <hr/>
+
+        <p id="room-info-equipment"></p>
+
+        <hr/>
+
+        <p id="room-info-description"></p>
 
     </div>
 
@@ -100,9 +112,11 @@
 
     <script>
         var panelsActive = 0;
+        var searchBarActive = false, roomInfoBarActive = false;
 
         function openSearchSidebar() {
-
+            if (searchBarActive) return;
+            searchBarActive = true;
 
             if (panelsActive === 0) document.getElementById("main").style.marginLeft = "25%";
             document.getElementById("search-sidebar").style.width = "25%";
@@ -111,39 +125,39 @@
             if (panelsActive === 0) document.getElementById("openSearchSidebar").style.display = 'none';
 
             panelsActive++;
-
-            console.log(panelsActive);
         }
 
         function closeSearchSidebar() {
+            if (!searchBarActive) return;
+            searchBarActive = false;
+
             if (panelsActive === 1) document.getElementById("main").style.marginLeft = "0%";
             document.getElementById("search-sidebar").style.display = "none";
             if (panelsActive === 1) document.getElementById("openSearchSidebar").style.display = "inline-block";
 
             panelsActive--;
-
-            console.log(panelsActive);
         }
 
         function openRoomSidebar() {
+            if (roomInfoBarActive) return;
+            roomInfoBarActive = true;
+
             if (panelsActive === 0) document.getElementById("main").style.marginLeft = "25%";
             document.getElementById("room-sidebar").style.width = "25%";
             document.getElementById("room-sidebar").style.display = "block";
-            if (panelsActive === 0) document.getElementById("openRoomSidebar").style.display = 'none';
 
             panelsActive++;
-
-            console.log(panelsActive);
         }
 
         function closeRoomSidebar() {
+            if (!roomInfoBarActive) return;
+            roomInfoBarActive = false;
+
             if (panelsActive === 1) document.getElementById("main").style.marginLeft = "0%";
+
             document.getElementById("room-sidebar").style.display = "none";
-            if (panelsActive === 1) document.getElementById("openRoomSidebar").style.display = "inline-block";
 
             panelsActive--;
-
-            console.log(panelsActive);
         }
     </script>
 </div>

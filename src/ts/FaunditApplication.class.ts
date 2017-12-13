@@ -67,20 +67,7 @@ export class FaunditApplication {
 
                 const marker: MapMarker<RoomData> = <MapMarker<RoomData>>intersects[0].object;
 
-                const roomData: RoomData = marker.getData();
-
-                if (roomData !== null) {
-
-                    openRoomSidebar();
-
-                    const roomName: any = document.getElementById("room-info-name");
-
-                    roomName.innerText = roomData.id;
-
-                } else {
-                    alert("No room information available!");
-                }
-
+                this.showRoomInformation(marker.getData());
 
             } else {
                 // TODO
@@ -138,6 +125,32 @@ export class FaunditApplication {
                 this.render();
             });
 
+    }
+
+    private showRoomInformation(roomData: RoomData) {
+
+        if (roomData !== null) {
+
+            openRoomSidebar();
+
+            const roomName: any = document.getElementById("room-info-name");
+            const roomBuilding: any = document.getElementById("room-info-building");
+            const roomEquipment: any = document.getElementById("room-info-equipment");
+            const roomDescription: any = document.getElementById("room-info-description");
+
+            roomName.innerText = `${roomData.id} (${roomData.capacity} seats)`;
+            roomBuilding.innerText = roomData.buildingName;
+
+            roomEquipment.innerHTML =
+                `<p>${(roomData.hasBeamer) ? ("&#x2714;") : ("&#x274c;")} Beamer</p>`
+                + `<p>${(roomData.hasAudio) ? ("&#x2714;") : ("&#x274c;")} Audio</p>`
+                + `<p>${(roomData.hasBoard) ? ("&#x2714;") : ("&#x274c;")} Board</p>`;
+
+            roomDescription.innerText = roomData.description;
+
+        } else {
+            alert("No room information available!");
+        }
     }
 
     private showOnMap(roomData: RoomData): Promise<void> {
@@ -230,6 +243,9 @@ export class FaunditApplication {
 
                                     const newElement: JQuery = $(`<a href="#" class="w3-bar-item w3-button">${roomData.id} (${roomData.buildingName})</a>`);
                                     newElement.bind("click", () => {
+
+                                        this.showRoomInformation(roomData);
+
                                         this.showOnMap(roomData)
                                             .then(() => {
                                                 // TODO: Display room data
