@@ -57,7 +57,7 @@ export class FaunditApplication {
 
         this.rayCaster = new THREE.Raycaster();
 
-        this.lighting = new THREE.DirectionalLight(0xffffff, 1.5);
+        this.lighting = new THREE.DirectionalLight(0xffffff, 2.0);
         this.lighting.position.set(0, 100, 0);
 
         this.scene.add(this.lighting);

@@ -1,4 +1,4 @@
-import {Color, ConeGeometry, Mesh, MeshBasicMaterial, Vector3} from "three";
+import {Color, ConeGeometry, Mesh, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, Vector3} from "three";
 
 export class MapMarker extends Mesh {
 

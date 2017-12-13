@@ -36,27 +36,37 @@
 
             opacity: 0.7;
         }
+
+        #mySidebar {
+            opacity: 0.9;
+        }
+
     </style>
 </head>
 <body>
 
 <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
-    <button class="w3-bar-item w3-button w3-large"
-            onclick="w3_close()">&times;
-    </button>
 
-    <form style="margin: 15px;">
-        <input id="room-search-string" placeholder="Search for room ..."/>
-        <button id="submit-room-search">Search</button>
-    </form>
+    <div>
 
-    <div id="search-result-list">
+        <button class="w3-bar-item w3-button w3-large"
+                onclick="w3_close()">&times;
+        </button>
+
+        <form style="margin: 15px;">
+            <input id="room-search-string" placeholder="Search for room ..."/>
+            <button id="submit-room-search">Search</button>
+        </form>
+
+        <div id="search-result-list">
+        </div>
+
     </div>
 
 </div>
 
 <div id="main">
-    <h1 id="pointer-label" style="text-align: right;">-</h1>
+    <h1 id="pointer-label">-</h1>
 
     <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
 
