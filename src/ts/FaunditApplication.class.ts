@@ -137,6 +137,8 @@ export class FaunditApplication {
             const roomBuilding: any = document.getElementById("room-info-building");
             const roomEquipment: any = document.getElementById("room-info-equipment");
             const roomDescription: any = document.getElementById("room-info-description");
+            const roomEngagement: any = document.getElementById("room-info-engaged");
+            const roomAvailability: any = document.getElementById("room-info-availability");
 
             roomName.innerText = `${roomData.id} (${roomData.capacity} seats)`;
             roomBuilding.innerText = roomData.buildingName;
@@ -148,18 +150,22 @@ export class FaunditApplication {
 
             roomDescription.innerText = roomData.description;
 
+            roomEngagement.innerHTML = `Currently, there is <b>Algorithmen und Datenstrukturen (Tafelübung)</b> in progress.`;
+
+            roomAvailability.innerHTML = `This room is available from <b>15:00</b> on.`;
+
         } else {
             alert("No room information available!");
         }
     }
 
-    private showOnMap(roomData: RoomData): Promise<void> {
+    private showOnMap(roomData: RoomData): Promise<boolean> {
 
         return new Promise((resolve, reject) => {
 
             if (!this.map.isLocationOnMap(roomData.location)) {
                 alert(`Room "${roomData.id}" is not part of the map!`);
-                return resolve();
+                return resolve(false);
             } else {
 
                 const marker: MapMarker<RoomData> = this.map.setRoomMarker(roomData.location, roomData);
@@ -169,7 +175,7 @@ export class FaunditApplication {
                 this.slowlyLookAt(marker.position, 2500)
                     .then(() => {
 
-                        return resolve();
+                        return resolve(true);
                     });
 
             }
@@ -244,7 +250,9 @@ export class FaunditApplication {
                                     const newElement: JQuery = $(`<a href="#" class="w3-bar-item w3-button">${roomData.id} (${roomData.buildingName})</a>`);
                                     newElement.bind("click", () => {
 
-                                        this.showRoomInformation(roomData);
+                                        if (this.map.isLocationOnMap(roomData.location)) {
+                                            this.showRoomInformation(roomData);
+                                        }
 
                                         this.showOnMap(roomData)
                                             .then(() => {

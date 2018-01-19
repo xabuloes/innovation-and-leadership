@@ -164,7 +164,7 @@ export class NavigationMap {
      */
     public setRoomMarker(location: EarthCoordinate, data: RoomData /* TODO: Make generic? */, color?: number): MapMarker<RoomData> {
 
-        color = color || 0xff0000;
+        color = color || 0xffff00;
 
         console.log(location);
 
