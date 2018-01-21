@@ -1,3 +1,11 @@
+export interface UserProfileSkill {
+
+    label: string;
+
+    skillRating: number;
+
+}
+
 export interface UserProfileData {
 
     username: string;
@@ -5,5 +13,7 @@ export interface UserProfileData {
     firstName: string;
 
     lastName: string;
+
+    skills: UserProfileSkill[];
 
 }

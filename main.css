@@ -73,3 +73,29 @@ body {
 #goto-map {
 
 }
+
+#current-lecture-list {
+
+    list-style-type: none;
+
+}
+
+.current-lecture {
+
+    padding: 10px;
+
+}
+
+.current-lecture-title {
+
+}
+
+.current-lecture-time {
+
+}
+
+.current-lecture-goto {
+    background-color: #f9f9f9;
+    padding: 10px;
+}
+

@@ -4,7 +4,10 @@ import {NavigationMap} from "./classes/NavigationMap/NavigationMap.class";
 import {LocationDeterminationService} from "./interfaces/LocationDeterminationService/LocationDeterminationService.interface";
 import {inject, injectable} from "inversify";
 import "reflect-metadata";
-import {DynamicEarthCoordinate, EarthCoordinate} from "./interfaces/LocationDeterminationService/EarthCoordinate.interface";
+import {
+    DynamicEarthCoordinate,
+    EarthCoordinate
+} from "./interfaces/LocationDeterminationService/EarthCoordinate.interface";
 import * as $ from "jquery";
 import {RoomDatabaseConnector} from "./interfaces/RoomDatabase/RoomDatabaseConnector.interface";
 import {RoomData} from "./interfaces/RoomDatabase/RoomData.interface";
@@ -228,6 +231,12 @@ export class FaunditApplication {
     private installEventHandlers(): void {
 
         // TODO: Add handler for goto map
+
+        $("#goto-map").click(() => {
+
+            // TODO
+
+        });
 
         $("#submit-room-search").click(() => {
 
