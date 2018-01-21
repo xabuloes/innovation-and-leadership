@@ -239,7 +239,9 @@ export class FaunditApplication {
 
         });
 
-        $("#submit-room-search").click(() => {
+        $("#submit-room-search").click((e) => {
+
+            e.preventDefault();
 
             const roomIdParam: any = $("#room-search-string").val();
 
