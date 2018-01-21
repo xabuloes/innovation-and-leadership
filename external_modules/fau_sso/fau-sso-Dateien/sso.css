@@ -1,0 +1,71 @@
+.pp-messageBox.pp-leftBox img, .pp-messageBox.pp-rightBox img { position: relative; display: block; }
+.pp-simpleSamlDl dt { font-weight: bold; margin-left: 5px; }
+.pp-simpleSamlDl dd { margin: 0 0 15px 5px; line-height: 1.3em; }
+fieldset#pp-login { max-width: 420px; }
+fieldset#pp-login label {width: 120px; }
+
+.btn, .btnaddonright {
+        color: #000000;
+        border: 1px solid #eee;
+        border-radius: 3px;
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        text-align: center;
+        padding: 5px;
+        cursor: hand;
+}
+
+.btn:hover, .btnaddonright:hover {
+        border-color: #ccc;
+        background-color: #ddd;
+        background-image: linear-gradient(#eee, #ddd);
+
+}
+
+button.btn.pp-greenbutton:hover { background-color: #95a425; background-image: -webkit-linear-gradient(#d2dc92 0%, #95a425 100%); background-image: -moz-linear-gradient(#d2dc92 0%, #95a425 100%); background-image: -o-linear-gradient(#d2dc92 0%, #95a425 100%); background-image: linear-gradient(#d2dc92 0%, #95a425 100%); }
+
+.btn img,
+.btnaddonright img {
+        max-height: 15px;
+        max-width: 15px;
+}
+
+.topright {
+        position: absolute;
+        right: 2em;
+}
+
+.input-group {
+        display: table;
+}
+
+.input-group pre {
+        background: white;
+        position: relative;
+        width: 100%;
+        vertical-align: middle;
+        border: 1px solid #eee;
+        padding: 0.5em;
+        display: table-cell;
+}
+
+.input-group .btnaddonright {
+        position: relative;
+        display: inline-block;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 3px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 3px;
+        border-left: none;
+}
+
+.input-group .btnaddonright:hover {
+        border-left: 1px solid #ccc;
+}
+
+.input-group .input-left {
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 0;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 0;
+}

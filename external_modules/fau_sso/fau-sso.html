@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,height=device-height">
+    <title>Single Sign-On</title>
+    <link rel="shortcut icon" type="image/x-icon"
+          href="https://www.sso.uni-erlangen.de/simplesaml/module.php/themepp/images/pp-favicon.ico">
+    <!-- <link rel="stylesheet" type="text/css" href="/simplesaml/resources/default.css" /> -->
+    <link rel="stylesheet" href="fau-sso-Dateien/pp.css">
+    <link rel="stylesheet" href="fau-sso-Dateien/sso.css">
+    <link rel="stylesheet" href="fau-sso-Dateien/media_queries.css">
+    <script src="fau-sso-Dateien/jquery-1.js" type="text/javascript"></script>
+    <script src="fau-sso-Dateien/navi_scroll_top.js" type="text/javascript"></script>
+    <script src="fau-sso-Dateien/detectmobilebrowser.js" type="text/javascript"></script>
+    <script type="text/javascript" src="fau-sso-Dateien/script.js"></script>
+    <title>Bitte geben Sie Ihre FAU-Login-Daten ein</title>
+
+
+    <meta name="robots" content="noindex, nofollow">
+
+
+</head>
+<body id="pp-body" onload="SimpleSAML_focus('username');">
+
+<div id="pp-headSpacer"></div>
+<div id="pp-page">
+    <div id="pp-header" style="top: 0px;">
+        <div id="pp-logo">
+            <a href="http://www.fau.de/" class="pp-rightLogo" title="Zum Portal der Friedrich-Alexander-Universität">
+                <img src="fau-sso-Dateien/fau_logo.png" alt="Friedrich-Alexander-Universität Erlangen-Nürnberg"
+                     width="190" height="38">
+            </a>
+            <a href="https://www.sso.uni-erlangen.de/" class="pp-leftLogo">
+                <span>Single Sign-On</span><br>Zentraler Anmeldedienst der Universität Erlangen-Nürnberg
+            </a>
+        </div>
+    </div>
+
+    <div id="pp-mainMenu" style="top: 100px;">
+        <ul>
+            <li class="pp-showMainMenu pp-up"><img src="fau-sso-Dateien/icon-menu_grey_gradient.png" alt="Menu"
+                                                   id="pp-burger"></li>
+            <li class="pp-topMenuWebTitle">Single Sign-On</li>
+            <li><a href="https://www.idm.uni-erlangen.de/go/login/index?lang=de">IdM Self Service</a></li>
+            <li class="pp-languages">
+                <a href="https://www.sso.uni-erlangen.de/simplesaml/module.php/core/loginuserpass.php?AuthState=_9ac59feeb4594eaee0f4cb7806e2aaf3eab9d3a231%3Ahttps%3A%2F%2Fwww.sso.uni-erlangen.de%2Fsimplesaml%2Fsaml2%2Fidp%2FSSOService.php%3Fspentityid%3Dhttps%253A%252F%252Fwww.studon.fau.de%252Fsimplesaml%252Fmodule.php%252Fsaml%252Fsp%252Fmetadata.php%252Fdefault-sp%26cookieTime%3D1516551187%26RelayState%3Dhttps%253A%252F%252Fwww.studon.fau.de%252Fstudon%252Fsaml_login.php&amp;language=en"><img
+                        src="fau-sso-Dateien/flag_en.png" alt="English" title="English" id="pp-localeFlag"></a></li>
+        </ul>
+    </div>
+
+
+    <!-- content -->
+    <div id="pp-content" class="pp-content">
+        <!--[if lte IE 7]>
+        <fieldset class="pp-messageBox2 pp-darkRedGlow ie7ccFixes">
+            <img src="https://www.idm.uni-erlangen.de/tango/48x48/status/warning.png"/>
+            <div>
+                <p class="gap10"><strong>Sie verwenden Internet Explorer 7 oder einen noch älteren Browser!</strong></p>
+                <p>Diese veralteten Browser weisen zahlreiche Sicherheitslücken auf und werden von uns nicht mehr
+                    unterstützt.
+                    Wir empfehlen Ihnen dringend eine <a
+                            href="https://www.microsoft.com/de-de/Search/result.aspx?q=internet%20explorer&form=MSHOME"
+                            title="Externer Link: zu Microsoft">Aktualisierung auf die je nach Betriebssystem aktuellste
+                        Version</a>.
+                </p>
+            </div>
+        </fieldset>
+        <![endif]-->
+        <!--[if IE 8]>
+        <fieldset class="pp-messageBox2 pp-darkRedGlow ">
+            <img src="https://www.idm.uni-erlangen.de/tango/48x48/status/warning.png"/>
+            <div>
+                <p class="gap10"><strong>Sie verwenden noch den Internet Explorer 8!</strong></p>
+                <p>Dieser weist zahlreiche Sicherheitslücken auf und wird von uns nur noch eingeschränkt unterstützt.
+                    Wir empfehlen Ihnen dringend eine <a
+                            href="https://www.microsoft.com/de-de/Search/result.aspx?q=internet%20explorer&form=MSHOME"
+                            title="Externer Link: zu Microsoft">Aktualisierung auf die je nach Betriebssystem aktuellste
+                        Version</a>.
+                </p>
+            </div>
+        </fieldset>
+        <![endif]-->
+
+
+        <div class="fl-screenNavigator-scroll-container" id="content">
+            <h1>Bitte geben Sie Ihre FAU-Login-Daten ein</h1>
+
+            <form action="../../index.html" method="get" name="f">
+                <fieldset id="pp-login">
+                    <div>
+                        <label class="fl-label" for="username">Benutzerkennung:</label>
+                        <input id="username" tabindex="1" name="username" value="" autocomplete="false" size="25"
+                               accesskey="u" class="required"
+                               type="text"></div>
+                    <div class="pp-marginTop5">
+                        <label class="fl-label" for="password">Passwort:</label>
+                        <input autocomplete="on" size="25" value="" accesskey="p" tabindex="2" class="required"
+                               name="password" id="password"
+                               type="password">
+                    </div>
+                </fieldset>
+                <div>
+                    <input tabindex="4" id="regularsubmit" value="Anmelden" accesskey="l" name="regularsubmit"
+                           class="btn-submit pp-marginLeft0" type="submit">
+                    
+                </div>
+                <input name="AuthState"
+                       value="_9ac59feeb4594eaee0f4cb7806e2aaf3eab9d3a231:https://www.sso.uni-erlangen.de/simplesaml/saml2/idp/SSOService.php?spentityid=https%3A%2F%2Fwww.studon.fau.de%2Fsimplesaml%2Fmodule.php%2Fsaml%2Fsp%2Fmetadata.php%2Fdefault-sp&amp;cookieTime=1516551187&amp;RelayState=https%3A%2F%2Fwww.studon.fau.de%2Fstudon%2Fsaml_login.php"
+                       type="hidden">
+                <p class="pp-marginTop25"><strong>Passwort vergessen?</strong></p>
+                <p class="pp-marginTop10">Um die Passwortwiederherstellung zu starten, nutzen Sie bitte den folgenden
+                    Link.</p>
+                <p><a href="https://www.idm.uni-erlangen.de/go/forgottenPassword/?lang=de">Zur
+                    Passwortwiederherstellung</a></p>
+                <p class="pp-marginTop25"><strong>Loggen
+                    Sie sich aus Sicherheitsgründen immer aus passwortgeschützten Bereichen
+                    aus und schließen Sie im Anschluß Ihren Webbrowser.</strong></p>
+            </form>
+
+        </div><!-- #content -->
+        <div id="pp-footer" class="pp-clearBoth">
+            <ul>
+                <li><a title="Link zur RRZE Webseite" href="http://www.rrze.de/" target="extern"><img
+                        src="fau-sso-Dateien/rrze-logo-grey-120x47.gif" alt="RRZE" class="pp-rrzeLogo"></a></li>
+                <li><a href="https://www.idm.fau.de/go/tech/help">Hilfe</a></li>
+                <li><a href="https://www.idm.fau.de/go/tech/contact">Kontakt</a></li>
+                <li><a href="https://www.idm.fau.de/go/tech/imprint">Impressum</a></li>
+                <li><a href="https://www.idm.fau.de/go/tech/usageGuidelines">Benutzungsrichtlinien</a></li>
+            </ul>
+        </div> <!-- #pp-footer -->
+    </div><!-- #pp-page -->
+
+
+</div>
+</body>
+</html>
