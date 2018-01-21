@@ -235,6 +235,7 @@ export class FaunditApplication {
         $("#goto-map").click(() => {
 
             // TODO
+            $("#start-view").addClass("animated fadeOutUp");
 
         });
 

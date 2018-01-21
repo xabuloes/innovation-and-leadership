@@ -72,6 +72,12 @@ body {
 
 #goto-map {
 
+    background-color: #f9f9f9;
+
+    margin-top: 20px;
+
+    padding: 10px;
+
 }
 
 #current-lecture-list {
@@ -95,7 +101,12 @@ body {
 }
 
 .current-lecture-goto {
+
     background-color: #f9f9f9;
+
+    margin-top: 20px;
+
     padding: 10px;
+
 }
 
