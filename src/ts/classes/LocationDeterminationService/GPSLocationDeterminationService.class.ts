@@ -1,5 +1,5 @@
-import {LocationDeterminationService} from "../interfaces/LocationDeterminationService.interface";
-import {DynamicEarthCoordinate, EarthCoordinate} from "../interfaces/EarthCoordinate.interface";
+import {LocationDeterminationService} from "../../interfaces/LocationDeterminationService/LocationDeterminationService.interface";
+import {DynamicEarthCoordinate, EarthCoordinate} from "../../interfaces/LocationDeterminationService/EarthCoordinate.interface";
 import {injectable} from "inversify";
 import {Contract} from "typedcontract";
 

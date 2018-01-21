@@ -1,9 +1,9 @@
 // TODO Introduce NavigationMap for OBJ files
 import {Box3, BoxHelper, Color, Group, MTLLoader, Object3D, OBJLoader, Vector2, Vector3} from "three";
-import {EarthCoordinate} from "../interfaces/EarthCoordinate.interface";
+import {EarthCoordinate} from "../../interfaces/LocationDeterminationService/EarthCoordinate.interface";
 import {MapMarker} from "./NavigationMapMarker.class";
 import {Contract} from "typedcontract";
-import {RoomData} from "../interfaces/RoomDatabase/RoomData.interface";
+import {RoomData} from "../../interfaces/RoomDatabase/RoomData.interface";
 
 export class NavigationMap {
 

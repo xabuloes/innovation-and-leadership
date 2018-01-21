@@ -1,4 +1,4 @@
-import {PointOfInterest} from "../../interfaces/PointOfInterest.interface";
+import {PointOfInterest} from "../../interfaces/LocationDeterminationService/PointOfInterest.interface";
 
 /**
  * A list of all points of interest from the location is exported.

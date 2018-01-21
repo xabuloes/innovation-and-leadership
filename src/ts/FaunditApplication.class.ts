@@ -1,13 +1,14 @@
 import * as THREE from "three";
-import {MapMarker} from "./classes/NavigationMapMarker.class";
-import {NavigationMap} from "./classes/NavigationMap.class";
-import {LocationDeterminationService} from "./interfaces/LocationDeterminationService.interface";
+import {MapMarker} from "./classes/NavigationMap/NavigationMapMarker.class";
+import {NavigationMap} from "./classes/NavigationMap/NavigationMap.class";
+import {LocationDeterminationService} from "./interfaces/LocationDeterminationService/LocationDeterminationService.interface";
 import {inject, injectable} from "inversify";
 import "reflect-metadata";
-import {DynamicEarthCoordinate, EarthCoordinate} from "./interfaces/EarthCoordinate.interface";
+import {DynamicEarthCoordinate, EarthCoordinate} from "./interfaces/LocationDeterminationService/EarthCoordinate.interface";
 import * as $ from "jquery";
 import {RoomDatabaseConnector} from "./interfaces/RoomDatabase/RoomDatabaseConnector.interface";
 import {RoomData} from "./interfaces/RoomDatabase/RoomData.interface";
+import {UserProfileService} from "./interfaces/UserProfileService/UserProfileService.interface";
 
 declare const openRoomSidebar: Function;
 
@@ -45,6 +46,9 @@ export class FaunditApplication {
 
     @inject("roomDatabaseConnector")
     private roomDatabaseConnector: RoomDatabaseConnector;
+
+    @inject("userProfileService")
+    private userProfileService: UserProfileService;
 
     constructor() {
 
@@ -222,6 +226,8 @@ export class FaunditApplication {
     }
 
     private installEventHandlers(): void {
+
+        // TODO: Add handler for goto map
 
         $("#submit-room-search").click(() => {
 

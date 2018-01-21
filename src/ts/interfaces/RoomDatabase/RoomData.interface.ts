@@ -1,4 +1,4 @@
-import {EarthCoordinate} from "../EarthCoordinate.interface";
+import {EarthCoordinate} from "../LocationDeterminationService/EarthCoordinate.interface";
 
 export interface RoomData {
 

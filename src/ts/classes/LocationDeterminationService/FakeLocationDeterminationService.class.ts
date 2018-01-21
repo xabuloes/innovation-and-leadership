@@ -1,9 +1,9 @@
-import {LocationDeterminationService} from "../interfaces/LocationDeterminationService.interface";
-import {DynamicEarthCoordinate} from "../interfaces/EarthCoordinate.interface";
+import {LocationDeterminationService} from "../../interfaces/LocationDeterminationService/LocationDeterminationService.interface";
+import {DynamicEarthCoordinate} from "../../interfaces/LocationDeterminationService/EarthCoordinate.interface";
 import {injectable} from "inversify";
 import "reflect-metadata";
-import {PointsOfInterests} from "../map_data/techfak/PointsOfInterest.list";
-import {PointOfInterest} from "../interfaces/PointOfInterest.interface";
+import {PointsOfInterests} from "../../map_data/techfak/PointsOfInterest.list";
+import {PointOfInterest} from "../../interfaces/LocationDeterminationService/PointOfInterest.interface";
 
 @injectable()
 export class FakeLocationDeterminationService implements LocationDeterminationService {
