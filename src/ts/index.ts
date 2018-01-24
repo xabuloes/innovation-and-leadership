@@ -10,6 +10,8 @@ import {RoomDatabaseConnector} from "./interfaces/RoomDatabase/RoomDatabaseConne
 import {UnivisRoomDatabaseConnector} from "./classes/RoomDatabase/UnivisRoomDatabase/UnivisRoomDatabaseConnector.class";
 import {UserProfileService} from "./interfaces/UserProfileService/UserProfileService.interface";
 import {MockedUserProfileService} from "./classes/UserProfileService/MockedUserProfileService/MockedUserProfileService.class";
+import {configDefault} from "./classes/Config/Default/Default.config";
+import {ApplicationConfig} from "./interfaces/ApplicationConfig/ApplicationConfig.interface";
 
 
 /**
@@ -24,6 +26,8 @@ loadAdditionalThreeJsDependencies(THREE);
  * Create DI container and setup DI bindings
  */
 const inversifyContainer: Container = new Container();
+
+inversifyContainer.bind<ApplicationConfig>("config").toConstantValue(configDefault);
 
 inversifyContainer.bind<LocationDeterminationService>("locationDeterminationService").to(FakeLocationDeterminationService);
 inversifyContainer.bind<RoomDatabaseConnector>("roomDatabaseConnector").to(UnivisRoomDatabaseConnector);

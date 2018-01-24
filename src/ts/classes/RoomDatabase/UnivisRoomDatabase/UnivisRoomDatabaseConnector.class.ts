@@ -1,14 +1,16 @@
-import {injectable} from "inversify";
+import {inject, injectable} from "inversify";
 import * as $ from "jquery";
 import {RoomData} from "../../../interfaces/RoomDatabase/RoomData.interface";
 import {RoomDatabaseConnector} from "../../../interfaces/RoomDatabase/RoomDatabaseConnector.interface";
 import * as xml2js from "xml2js";
 import {Contract} from "typedcontract";
+import {ApplicationConfig} from "../../../interfaces/ApplicationConfig/ApplicationConfig.interface";
 
 @injectable()
 export class UnivisRoomDatabaseConnector implements RoomDatabaseConnector {
 
-    private readonly UNIVIS_PROXY_URL = "http://fabulo.es:8888/reverse_proxy/univis";
+    @inject("config")
+    private config: ApplicationConfig;
 
     constructor() {
         // TODO
@@ -26,7 +28,7 @@ export class UnivisRoomDatabaseConnector implements RoomDatabaseConnector {
 
                 $.ajax({
                         method: "GET",
-                        url: `${this.UNIVIS_PROXY_URL}/prg?search=${module}&name=${roomId}&show=${format}`,
+                        url: `${this.config.roomDatabase.host}/prg?search=${module}&name=${roomId}&show=${format}`,
                         dataType: "html",
                         success: (xmlData: string) => {
                             (new Contract()).In(xmlData)
