@@ -8,6 +8,8 @@ import {Contract} from "typedcontract";
 @injectable()
 export class UnivisRoomDatabaseConnector implements RoomDatabaseConnector {
 
+    private readonly UNIVIS_PROXY_URL = "http://fabulo.es:8888/reverse_proxy/univis";
+
     constructor() {
         // TODO
     }
@@ -24,7 +26,7 @@ export class UnivisRoomDatabaseConnector implements RoomDatabaseConnector {
 
                 $.ajax({
                         method: "GET",
-                        url: `http://univis.uni-erlangen.de/prg?search=${module}&name=${roomId}&show=${format}`,
+                        url: `${this.UNIVIS_PROXY_URL}/prg?search=${module}&name=${roomId}&show=${format}`,
                         dataType: "html",
                         success: (xmlData: string) => {
                             (new Contract()).In(xmlData)
