@@ -17,6 +17,7 @@ import {LectureDatabaseConnector} from "./interfaces/LectureDatabase/LectureData
 import {FakeLectureDatabaseConnector} from "./classes/LectureDatabase/FakeLectureDatabase/FakeLectureDatabaseConnector.class";
 import {Xml2JsonRequestAdapter} from "./interfaces/Xml2JsonRequestAdapter/Xml2JsonRequestAdapter.interface";
 import {Xml2JsonRequestAdpaterJQuery} from "./classes/Xml2JsonRequestAdapter/Xml2JsonRequestAdpaterJQuery.class";
+import {UnivisLectureDatabaseConnector} from "./classes/LectureDatabase/UnivisLectureDatabase/UnivisLectureDatabaseConnector.class";
 
 /**
  * Load missing three js components:
@@ -40,7 +41,7 @@ inversifyContainer.bind<LocationDeterminationService>(DI.LOCATION_DETERMINATION_
 inversifyContainer.bind<RoomDatabaseConnector>(DI.ROOM_DATABASE_CONNECTOR)
     .to(UnivisRoomDatabaseConnector).inSingletonScope();
 inversifyContainer.bind<LectureDatabaseConnector>(DI.LECTURE_DATABASE_CONNECTOR)
-    .to(FakeLectureDatabaseConnector).inSingletonScope();
+    .to(UnivisLectureDatabaseConnector).inSingletonScope();
 inversifyContainer.bind<UserProfileService>(DI.USER_PROFILE_SERVICE)
     .to(MockedUserProfileService).inSingletonScope();
 

@@ -21,7 +21,7 @@ export class Xml2JsonRequestAdpaterJQuery implements Xml2JsonRequestAdapter {
                 parser.parseString(xmlData, (error: any, result: any) => {
 
                     if (error) {
-                        throw new Error("Error while parsing XML to JSON!");
+                        throw new Error(`Error while parsing XML to JSON! (${error}).`);
                     } else {
                         resolve(result);
                     }

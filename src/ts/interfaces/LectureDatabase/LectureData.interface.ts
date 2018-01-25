@@ -11,4 +11,12 @@ export interface LectureData {
 
     room: RoomData;
 
+    type: string;
+
+    guestsAreAllowed: boolean;
+
+    url?: string;
+
+    topics?: string[];
+
 }

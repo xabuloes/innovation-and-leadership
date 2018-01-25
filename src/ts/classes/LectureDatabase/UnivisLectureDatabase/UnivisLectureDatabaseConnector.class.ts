@@ -5,11 +5,17 @@ import {DEPENDENCY_IDENTIFIER as DI} from "../../../DependencyIdentifier.const";
 import {RoomData} from "../../../interfaces/RoomDatabase/RoomData.interface";
 import {LectureData} from "../../../interfaces/LectureDatabase/LectureData.interface";
 import {Xml2JsonRequestAdapter} from "../../../interfaces/Xml2JsonRequestAdapter/Xml2JsonRequestAdapter.interface";
+import {Contract} from "typedcontract";
 
 @injectable()
 export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector {
 
-    private desiredFormat: string = "xml";
+    private desiredFormat = "xml";
+
+    private readonly LECTURE_TYPE: any = {
+        LECTURE: "vorl",
+        EXERCISE: "ue",
+    };
 
     public constructor(@inject(DI.CONFIG) private config: ApplicationConfig,
                        @inject(DI.XML2JSON_REQUEST_ADAPTER_SERVICE) private xml2JsonRequestAdapterService: Xml2JsonRequestAdapter) {
@@ -19,6 +25,10 @@ export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector 
     }
 
     public getLectureDataForRoom(room: RoomData): Promise<LectureData[]> {
+        throw new Error("Not implemented yet.");
+    }
+
+    public getLectureDataForToday(): Promise<LectureData[]> {
 
         const lectureSearchPattern = "Algo";
         const searchFor = "lectures";
@@ -26,26 +36,48 @@ export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector 
         return this.xml2JsonRequestAdapterService
             .ajaxRequest({
                 method: "GET",
-                url: `${this.config.roomDatabase.host}/prg?search=${module}&name=${lectureSearchPattern}&show=${this.desiredFormat}`,
+                url: `${this.config.lectureDatabase.host}/prg?search=${searchFor}&name=${lectureSearchPattern}&show=${this.desiredFormat}`,
                 dataType: "html"
             })
-            .then(() => {
-                // TODO
-                return [];
+            .then((result: any) => {
+
+                (new Contract()).In(result).isDefined().isNotNull();
+                (new Contract()).In(result.UnivIS).isDefined().isNotNull();
+                (new Contract()).In(result.UnivIS.Lecture).isDefined().isNotNull();
+
+                return result.UnivIS.Lecture
+                    .filter((lecture: any) => lecture.name !== null)
+                    .filter((lecture: any) => lecture.name.length > 0)
+                    .filter((lecture: any) => lecture.type[0] === this.LECTURE_TYPE.LECTURE)
+                    .map((lecture: any) => {
+
+                        console.log(lecture);
+
+                        // console.log(lecture);
+                        return <LectureData>{
+                            name: lecture.name[0],
+                            time: {
+                                start: new Date(),
+                                end: new Date(),
+                            },
+                            guestsAreAllowed: (lecture.gast[0] === "ja"),
+                            type: "UNKNOWN",
+                            topics: lecture.keywords,
+                            url: (typeof lecture.url_description !== "undefined") ? (lecture.url_description[0]) : (undefined)
+                        };
+
+                    });
+
             });
 
     }
 
-    public getLectureDataForToday(): Promise<LectureData[]> {
-        return Promise.resolve([]);
-    }
-
     public getLectureDataForTomorrow(): Promise<LectureData[]> {
-        return Promise.resolve([]);
+        throw new Error("Not implemented yet.");
     }
 
     public getLectureDataForTime(): Promise<LectureData[]> {
-        return Promise.resolve([]);
+        throw new Error("Not implemented yet.");
     }
 
 }
