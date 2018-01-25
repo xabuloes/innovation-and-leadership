@@ -12,6 +12,7 @@ import * as $ from "jquery";
 import {RoomDatabaseConnector} from "./interfaces/RoomDatabase/RoomDatabaseConnector.interface";
 import {RoomData} from "./interfaces/RoomDatabase/RoomData.interface";
 import {UserProfileService} from "./interfaces/UserProfileService/UserProfileService.interface";
+import {DEPENDENCY_IDENTIFIER as DI} from "./DependencyIdentifier.const";
 
 declare const openRoomSidebar: Function;
 
@@ -44,13 +45,13 @@ export class FaunditApplication {
 
     private roomMarkers: MapMarker<RoomData>[];
 
-    @inject("locationDeterminationService")
+    @inject(DI.LOCATION_DETERMINATION_SERVICE)
     private locationDeterminationService: LocationDeterminationService;
 
-    @inject("roomDatabaseConnector")
+    @inject(DI.ROOM_DATABASE_CONNECTOR)
     private roomDatabaseConnector: RoomDatabaseConnector;
 
-    @inject("userProfileService")
+    @inject(DI.USER_PROFILE_SERVICE)
     private userProfileService: UserProfileService;
 
     constructor() {
@@ -58,15 +59,15 @@ export class FaunditApplication {
         document.addEventListener("mousemove", (event) => {
             event.preventDefault();
 
-            this.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-            this.mouse.y = -( event.clientY / window.innerHeight ) * 2 + 1;
+            this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
         });
 
         document.addEventListener("mousedown", (event) => {
             const mouse: THREE.Vector2 = new THREE.Vector2(0, 0);
 
-            mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-            mouse.y = -( event.clientY / window.innerHeight ) * 2 + 1;
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
             this.rayCaster.setFromCamera(mouse, this.camera);
             const intersects = this.rayCaster.intersectObjects(this.roomMarkers);

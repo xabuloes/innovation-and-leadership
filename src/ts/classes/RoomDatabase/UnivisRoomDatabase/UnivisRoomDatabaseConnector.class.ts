@@ -5,11 +5,12 @@ import {RoomDatabaseConnector} from "../../../interfaces/RoomDatabase/RoomDataba
 import * as xml2js from "xml2js";
 import {Contract} from "typedcontract";
 import {ApplicationConfig} from "../../../interfaces/ApplicationConfig/ApplicationConfig.interface";
+import {DEPENDENCY_IDENTIFIER as DI} from "../../../DependencyIdentifier.const";
 
 @injectable()
 export class UnivisRoomDatabaseConnector implements RoomDatabaseConnector {
 
-    @inject("config")
+    @inject(DI.CONFIG)
     private config: ApplicationConfig;
 
     constructor() {

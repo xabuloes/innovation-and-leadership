@@ -12,6 +12,7 @@ import {UserProfileService} from "./interfaces/UserProfileService/UserProfileSer
 import {MockedUserProfileService} from "./classes/UserProfileService/MockedUserProfileService/MockedUserProfileService.class";
 import {configDefault} from "./classes/Config/Default/Default.config";
 import {ApplicationConfig} from "./interfaces/ApplicationConfig/ApplicationConfig.interface";
+import {DEPENDENCY_IDENTIFIER as DI} from "./DependencyIdentifier.const";
 
 
 /**
@@ -21,17 +22,19 @@ declare const loadAdditionalThreeJsDependencies: Function;
 
 loadAdditionalThreeJsDependencies(THREE);
 
-
 /**
  * Create DI container and setup DI bindings
  */
 const inversifyContainer: Container = new Container();
 
-inversifyContainer.bind<ApplicationConfig>("config").toConstantValue(configDefault);
+inversifyContainer.bind<ApplicationConfig>(DI.CONFIG).toConstantValue(configDefault);
 
-inversifyContainer.bind<LocationDeterminationService>("locationDeterminationService").to(FakeLocationDeterminationService);
-inversifyContainer.bind<RoomDatabaseConnector>("roomDatabaseConnector").to(UnivisRoomDatabaseConnector);
-inversifyContainer.bind<UserProfileService>("userProfileService").to(MockedUserProfileService);
+inversifyContainer.bind<LocationDeterminationService>(DI.LOCATION_DETERMINATION_SERVICE)
+    .to(FakeLocationDeterminationService);
+inversifyContainer.bind<RoomDatabaseConnector>(DI.ROOM_DATABASE_CONNECTOR)
+    .to(UnivisRoomDatabaseConnector);
+inversifyContainer.bind<UserProfileService>(DI.USER_PROFILE_SERVICE)
+    .to(MockedUserProfileService);
 
 /**
  * Resolve application instance (= start application)
