@@ -138,8 +138,6 @@ export class FaunditApplication {
 
     private showTodaysLecturesBasedOnUserData(): Promise<void> {
 
-        console.log(this.lectureDatabaseConnector);
-
         return this.lectureDatabaseConnector.getLectureDataForToday()
             .then((todaysLectures: LectureData[]) => {
 

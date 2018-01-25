@@ -15,7 +15,8 @@ import {ApplicationConfig} from "./interfaces/ApplicationConfig/ApplicationConfi
 import {DEPENDENCY_IDENTIFIER as DI} from "./DependencyIdentifier.const";
 import {LectureDatabaseConnector} from "./interfaces/LectureDatabase/LectureDatabaseConnector.interface";
 import {FakeLectureDatabaseConnector} from "./classes/LectureDatabase/FakeLectureDatabase/FakeLectureDatabaseConnector.class";
-
+import {Xml2JsonRequestAdapter} from "./interfaces/Xml2JsonRequestAdapter/Xml2JsonRequestAdapter.interface";
+import {Xml2JsonRequestAdpaterJQuery} from "./classes/Xml2JsonRequestAdapter/Xml2JsonRequestAdpaterJQuery.class";
 
 /**
  * Load missing three js components:
@@ -30,6 +31,9 @@ loadAdditionalThreeJsDependencies(THREE);
 const inversifyContainer: Container = new Container();
 
 inversifyContainer.bind<ApplicationConfig>(DI.CONFIG).toConstantValue(configDefault);
+
+inversifyContainer.bind<Xml2JsonRequestAdapter>(DI.XML2JSON_REQUEST_ADAPTER_SERVICE)
+    .to(Xml2JsonRequestAdpaterJQuery).inSingletonScope();
 
 inversifyContainer.bind<LocationDeterminationService>(DI.LOCATION_DETERMINATION_SERVICE)
     .to(FakeLocationDeterminationService).inSingletonScope();
