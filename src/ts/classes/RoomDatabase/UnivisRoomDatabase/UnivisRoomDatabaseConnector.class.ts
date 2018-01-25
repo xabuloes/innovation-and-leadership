@@ -11,6 +11,8 @@ import {Xml2JsonRequestAdapter} from "../../../interfaces/Xml2JsonRequestAdapter
 @injectable()
 export class UnivisRoomDatabaseConnector implements RoomDatabaseConnector {
 
+    private desiredFormat = "xml";
+
     constructor(@inject(DI.CONFIG) private config: ApplicationConfig,
                 @inject(DI.XML2JSON_REQUEST_ADAPTER_SERVICE) private xml2JsonRequestAdapter: Xml2JsonRequestAdapter) {
         // TODO
@@ -38,13 +40,12 @@ export class UnivisRoomDatabaseConnector implements RoomDatabaseConnector {
                     .isNotNull()
                     .isLengthGreaterThan("");
 
-                const format = "xml";
-                const module = "rooms";
+                const searchFor = "rooms";
 
                 this.xml2JsonRequestAdapter.ajaxRequest(
                     {
                         method: "GET",
-                        url: `${this.config.roomDatabase.host}/prg?search=${module}&name=${roomId}&show=${format}`,
+                        url: `${this.config.roomDatabase.host}/prg?search=${searchFor}&name=${roomId}&show=${this.desiredFormat}`,
                         dataType: "html"
                     }
                 ).then((result) => {

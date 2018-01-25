@@ -4,6 +4,10 @@ export const configDefault: ApplicationConfig = <ApplicationConfig>{
 
     roomDatabase: {
         host: "http://fabulo.es:8888/reverse_proxy/univis",
+    },
+
+    lectureDatabase: {
+        host: "http://fabulo.es:8888/reverse_proxy/univis",
     }
 
 };

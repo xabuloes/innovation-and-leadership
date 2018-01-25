@@ -4,17 +4,36 @@ import {ApplicationConfig} from "../../../interfaces/ApplicationConfig/Applicati
 import {DEPENDENCY_IDENTIFIER as DI} from "../../../DependencyIdentifier.const";
 import {RoomData} from "../../../interfaces/RoomDatabase/RoomData.interface";
 import {LectureData} from "../../../interfaces/LectureDatabase/LectureData.interface";
+import {Xml2JsonRequestAdapter} from "../../../interfaces/Xml2JsonRequestAdapter/Xml2JsonRequestAdapter.interface";
 
 @injectable()
 export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector {
 
+    private desiredFormat: string = "xml";
 
-    public constructor(@inject(DI.CONFIG) private config: ApplicationConfig) {
+    public constructor(@inject(DI.CONFIG) private config: ApplicationConfig,
+                       @inject(DI.XML2JSON_REQUEST_ADAPTER_SERVICE) private xml2JsonRequestAdapterService: Xml2JsonRequestAdapter) {
         // TODO
+
+
     }
 
     public getLectureDataForRoom(room: RoomData): Promise<LectureData[]> {
-        return Promise.resolve([]);
+
+        const lectureSearchPattern = "Algo";
+        const searchFor = "lectures";
+
+        return this.xml2JsonRequestAdapterService
+            .ajaxRequest({
+                method: "GET",
+                url: `${this.config.roomDatabase.host}/prg?search=${module}&name=${lectureSearchPattern}&show=${this.desiredFormat}`,
+                dataType: "html"
+            })
+            .then(() => {
+                // TODO
+                return [];
+            });
+
     }
 
     public getLectureDataForToday(): Promise<LectureData[]> {

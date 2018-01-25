@@ -10,7 +10,7 @@ export class Xml2JsonRequestAdpaterJQuery implements Xml2JsonRequestAdapter {
         // TODO
     }
 
-    public ajaxRequest(ajaxSettings: any): Promise<any> {
+    public ajaxRequest(ajaxSettings: JQueryAjaxSettings): Promise<any> {
 
         return new Promise<any>((resolve, reject) => {
 
