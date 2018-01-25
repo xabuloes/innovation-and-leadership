@@ -24,7 +24,7 @@ export class FakeLectureDatabaseConnector implements LectureDatabaseConnector {
         }]);
     }
 
-    public getLectureDataForToday(): Promise<LectureData[]> {
+    public getLectureDataForToday(searchPattern: string): Promise<LectureData[]> {
 
         return this.roomDatabaseConnector.getDataForRoom("00.153")
             .then((room: RoomData) => {

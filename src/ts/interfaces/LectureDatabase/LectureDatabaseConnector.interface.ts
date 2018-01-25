@@ -5,7 +5,7 @@ export interface LectureDatabaseConnector {
 
     getLectureDataForRoom(room: RoomData): Promise<LectureData[]>;
 
-    getLectureDataForToday(): Promise<LectureData[]>;
+    getLectureDataForToday(searchPattern: string): Promise<LectureData[]>;
 
     getLectureDataForTomorrow(): Promise<LectureData[]>;
 

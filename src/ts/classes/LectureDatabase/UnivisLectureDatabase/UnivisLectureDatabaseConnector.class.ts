@@ -21,22 +21,20 @@ export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector 
                        @inject(DI.XML2JSON_REQUEST_ADAPTER_SERVICE) private xml2JsonRequestAdapterService: Xml2JsonRequestAdapter) {
         // TODO
 
-
     }
 
     public getLectureDataForRoom(room: RoomData): Promise<LectureData[]> {
         throw new Error("Not implemented yet.");
     }
 
-    public getLectureDataForToday(): Promise<LectureData[]> {
+    public getLectureDataForToday(searchPattern: string): Promise<LectureData[]> {
 
-        const lectureSearchPattern = "Algo";
         const searchFor = "lectures";
 
         return this.xml2JsonRequestAdapterService
             .ajaxRequest({
                 method: "GET",
-                url: `${this.config.lectureDatabase.host}/prg?search=${searchFor}&name=${lectureSearchPattern}&show=${this.desiredFormat}`,
+                url: `${this.config.lectureDatabase.host}/prg?search=${searchFor}&name=${searchPattern}&show=${this.desiredFormat}`,
                 dataType: "html"
             })
             .then((result: any) => {
@@ -60,7 +58,7 @@ export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector 
                                 start: new Date(),
                                 end: new Date(),
                             },
-                            guestsAreAllowed: (lecture.gast[0] === "ja"),
+                            guestsAreAllowed: (lecture.gast[0] === "ja"), // TODO: Put "ja" in const
                             type: "UNKNOWN",
                             topics: lecture.keywords,
                             url: (typeof lecture.url_description !== "undefined") ? (lecture.url_description[0]) : (undefined)

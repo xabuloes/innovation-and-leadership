@@ -15,48 +15,55 @@
 
 <div id="start-view">
 
-    <img src="./assets/jw26d9qi.bmp"/>
+    <div id="start-view-header">
+        <h1 class="start-view-header-title">FAUNDIT</h1>
+    </div>
 
-    <table id="start-view-grid">
-        <tr>
-            <td>
-                <div>
-                    <h2>Profil</h2>
+    <div id="start-view-body">
+
+        <button id="goto-map" class="faundit-btn">Go to map!</button>
+
+        <table id="start-view-grid">
+            <tr>
+                <td>
+                    <h2>This may interest you</h2>
                     <hr/>
-                    <p id="profile-name"></p>
-                    <table>
-                        <tr>
-                            <td>Algorithms</td>
-                            <td>Good</td>
-                        </tr>
-                        <tr>
-                            <td>Database Modelling</td>
-                            <td>Very Good</td>
-                        </tr>
-                    </table>
-                </div>
-            </td>
-            <td>
-                <div>
+                </td>
+                <td>
                     <h2>What's up at Techfak?</h2>
                     <hr/>
-                    <ul id="current-lecture-list">
-                    </ul>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input placeholder="Filter list..." class="faundit-input"/>
                     <hr/>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div></div>
-            </td>
-            <td>
-                <div>
-                    <button id="goto-map">Go to map</button>
-                </div>
-            </td>
-        </tr>
-    </table>
+                </td>
+                <td>
+                    <input placeholder="Filter list..." class="faundit-input"/>
+                    <hr/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <div id="current-lecture-list-recommendation-spinner">Loading data from UnivIS...</div>
+                        <ul id="current-lecture-list-recommendation" class="lecture-list">
+                        </ul>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <div id="current-lecture-list-at-location-spinner">Loading data from UnivIS...</div>
+                        <ul id="current-lecture-list-at-location" class="lecture-list">
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+    </div>
 
 </div>
 
@@ -70,8 +77,10 @@
                     onclick="closeSearchSidebar()">&times;
             </button>
 
-            <form>
-                <input id="room-search-string" placeholder="Search for room ..."/>
+            <hr/>
+
+            <form autocomplete="off">
+                <input autofocus id="room-search-string" class="faundit-input" placeholder="Search for room ..."/><br/>
                 <button id="submit-room-search">Search</button>
             </form>
 
@@ -103,9 +112,11 @@
     </div>
 
     <div id="main">
-        <h1 id="pointer-label">-</h1>
 
         <button id="openSearchSidebar" class="w3-button w3-teal w3-xlarge" onclick="openSearchSidebar()">&#9776;
+        </button>
+
+        <button id="goto-start-view" class="w3-button w3-teal w3-xlarge">What's up?
         </button>
 
         <script>

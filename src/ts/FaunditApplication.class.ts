@@ -54,7 +54,7 @@ export class FaunditApplication {
 
         this.installEventHandlers();
 
-        this.showTodaysLecturesBasedOnUserData()
+        this.showInterestingLecturesToday()
             .then(() => {
                 // TODO
             });
@@ -109,22 +109,47 @@ export class FaunditApplication {
 
     }
 
-    private showTodaysLecturesBasedOnUserData(): Promise<void> {
+    private showLecturesAtLocation(): Promise<void> {
 
-        return this.lectureDatabaseConnector.getLectureDataForToday()
+        // $("#current-lecture-list-recommendation-spinner").show();
+        // current-lecture-list-at-location-spinner
+
+        return Promise.resolve();
+    }
+
+    private showInterestingLecturesToday(): Promise<void> {
+
+        $("#current-lecture-list-recommendation").empty();
+
+        $("#current-lecture-list-recommendation-spinner").show();
+
+        return this.lectureDatabaseConnector.getLectureDataForToday("Algo")
             .then((todaysLectures: LectureData[]) => {
 
-                // TODO
+                $("#current-lecture-list-recommendation-spinner").hide();
 
-                // <li class="current-lecture">
-                // <div class="current-lecture-title">Algorithmen & Datenstrukturen</div>
-                //     <div class="current-lecture-time">in 2 hours</div>
-                // <button class="current-lecture-goto">Show on map</button>
-                // </li>
+                todaysLectures.forEach((lecture: LectureData) => {
 
-                alert(`Found ${todaysLectures.length} lecture(s) for today.`);
+                        const listObject: JQuery = $(`<li class="lecture">`
+                            + `<div class="lecture-title">${lecture.name}</div>`
+                            // + `<div class="lecture-time">in 2 hours</div>`
+                            + `<a class="lecture-detail-link" target="_blank" href="${lecture.url}">Detailed information</a>`
+                            + ` | <a class="lecture-detail-link" href="#">Show on map</a>`
+                            + ((lecture.guestsAreAllowed) ? (`<div>Guests are allowed</div>`) : (`<div>Guests are not allowed</div>`))
+                            + `</li>`);
+
+                        $("#current-lecture-list-recommendation").append(listObject);
+
+                    }
+                );
 
             });
+
+    }
+
+    private showStartView(): void {
+
+        $("#start-view").addClass("animated fadeInDown");
 
     }
 
@@ -141,7 +166,9 @@ export class FaunditApplication {
             const roomEngagement: any = document.getElementById("room-info-engaged");
             const roomAvailability: any = document.getElementById("room-info-availability");
 
-            roomName.innerText = `${roomData.id} (${roomData.capacity} seats)`;
+            roomName.innerText =
+                `${roomData.id} (${roomData.capacity} seats)`
+            ;
             roomBuilding.innerText = roomData.buildingName;
 
             roomEquipment.innerHTML =
@@ -149,13 +176,21 @@ export class FaunditApplication {
                 + `<p>${(roomData.hasAudio) ? ("&#x2714;") : ("&#x274c;")} Audio</p>`
                 + `<p>${(roomData.hasBoard) ? ("&#x2714;") : ("&#x274c;")} Board</p>`;
 
-            roomDescription.innerText = roomData.description;
+            if (typeof roomData.description !== "undefined") {
+                roomDescription.innerText = roomData.description;
+            } else {
+                roomDescription.innerText = "No room description available.";
+            }
 
-            roomEngagement.innerHTML = `Currently, there is <b>Algorithmen und Datenstrukturen (Tafelübung)</b> in progress.`;
+            roomEngagement.innerHTML = `
+            Currently, there is <b>Algorithmen und Datenstrukturen (Tafelübung)</b> in progress.
+                `;
 
-            roomAvailability.innerHTML = `This room is available from <b>15:00</b> on.`;
+            roomAvailability.innerHTML = `
+            This room is available from <b>15:00</b> on.`;
 
-        } else {
+        }
+        else {
             alert("No room information available!");
         }
     }
@@ -256,7 +291,15 @@ export class FaunditApplication {
         $("#goto-map").click(() => {
 
             // TODO
+            $("#start-view").removeClass("animated fadeOutIn");
             $("#start-view").addClass("animated fadeOutUp");
+
+        });
+
+        $("#goto-start-view").click(() => {
+
+            $("#start-view").removeClass("animated fadeOutUp");
+            $("#start-view").addClass("animated fadeInDown");
 
         });
 
@@ -349,12 +392,15 @@ export class FaunditApplication {
 
                 const pointedAt: THREE.Object3D = intersects[0].object;
 
+                // TODO: What to do with the pointed object?
+
+                /*
                 const pointerLabelTextField: any = document.getElementById("pointer-label");
 
                 if (pointerLabelTextField) {
                     pointerLabelTextField.innerText = pointedAt.name;
                 }
-
+                */
             }
 
         }

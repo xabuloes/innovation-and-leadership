@@ -38,6 +38,44 @@ body {
     margin: 10px;
 }
 
+#submit-room-search {
+    visibility: hidden;
+}
+
+#room-search-string {
+
+    width: 100%;
+
+}
+
+.start-view-header-title {
+
+    text-transform: uppercase;
+
+    text-space: 10px;
+
+    color: white;
+
+    font-weight: bold;
+
+    letter-spacing: 10px;
+
+    padding-bottom: 40px;
+    padding-top: 40px;
+
+}
+
+.faundit-input {
+
+    background-color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: 3px #009688 solid;
+    border-radius: 4px;
+    cursor: pointer;
+
+}
+
 #room-info-content {
     margin: 10px;
 }
@@ -50,6 +88,8 @@ body {
 
     position: fixed;
 
+    overflow-y: scroll;
+
     top: 0;
     left: 0;
 
@@ -60,8 +100,6 @@ body {
 
     z-index: 9999999;
 
-    padding: 10%;
-
 }
 
 #start-view-grid {
@@ -70,37 +108,53 @@ body {
 
 }
 
-#goto-map {
+.faundit-btn {
 
     background-color: #f9f9f9;
 
     margin-top: 20px;
 
     padding: 10px;
+
+}
+
+#goto-map {
 
 }
 
 #current-lecture-list {
 
+}
+
+.lecture-list {
+
     list-style-type: none;
 
 }
 
-.current-lecture {
+.lecture {
 
     padding: 10px;
 
 }
 
-.current-lecture-title {
+.lecture-title {
+
+    font-weight: bold;
 
 }
 
-.current-lecture-time {
+.lecture-time {
 
 }
 
-.current-lecture-goto {
+.lecture-detail-link {
+
+    color: #4b4a56;
+
+}
+
+.lecture-goto {
 
     background-color: #f9f9f9;
 
@@ -110,3 +164,18 @@ body {
 
 }
 
+#start-view-header {
+
+    padding-left: 10%;
+    padding-right: 10%;
+
+    background-color: #009688;
+
+}
+
+#start-view-body {
+
+    padding-left: 10%;
+    padding-right: 10%;
+
+}
