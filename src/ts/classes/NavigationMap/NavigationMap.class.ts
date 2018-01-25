@@ -130,8 +130,6 @@ export class NavigationMap {
 
         color = color || 0xff0000;
 
-        console.log(location);
-
         /**
          * Setting up preconditions for coordinate value
          */
@@ -165,8 +163,6 @@ export class NavigationMap {
     public setRoomMarker(location: EarthCoordinate, data: RoomData /* TODO: Make generic? */, color?: number): MapMarker<RoomData> {
 
         color = color || 0xffff00;
-
-        console.log(location);
 
         /**
          * Setting up preconditions for coordinate value

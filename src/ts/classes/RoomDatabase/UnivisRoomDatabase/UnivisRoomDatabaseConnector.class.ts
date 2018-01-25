@@ -61,8 +61,6 @@ export class UnivisRoomDatabaseConnector implements RoomDatabaseConnector {
                         return resolve([]);
                     }
 
-                    console.log(roomsFoundRawData);
-
                     let roomsFound: RoomData[] = roomsFoundRawData.map((roomDataRaw: any) => {
 
                         let hasBeamer = false,

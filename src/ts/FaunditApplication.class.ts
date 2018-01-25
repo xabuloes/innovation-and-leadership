@@ -52,33 +52,6 @@ export class FaunditApplication {
                 @inject(DI.LOCATION_DETERMINATION_SERVICE) private locationDeterminationService: LocationDeterminationService,
                 @inject(DI.LECTURE_DATABASE_CONNECTOR) private lectureDatabaseConnector: LectureDatabaseConnector) {
 
-        document.addEventListener("mousemove", (event) => {
-            event.preventDefault();
-
-            this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        });
-
-        document.addEventListener("mousedown", (event) => {
-            const mouse: THREE.Vector2 = new THREE.Vector2(0, 0);
-
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-            this.rayCaster.setFromCamera(mouse, this.camera);
-            const intersects = this.rayCaster.intersectObjects(this.roomMarkers);
-            if (intersects.length > 0) {
-
-                const marker: MapMarker<RoomData> = <MapMarker<RoomData>>intersects[0].object;
-
-                this.showRoomInformation(marker.getData());
-
-            } else {
-                // TODO
-            }
-
-        });
-
         this.installEventHandlers();
 
         this.showTodaysLecturesBasedOnUserData()
@@ -252,6 +225,33 @@ export class FaunditApplication {
     private installEventHandlers(): void {
 
         // TODO: Add handler for goto map
+
+        document.addEventListener("mousemove", (event) => {
+            event.preventDefault();
+
+            this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        document.addEventListener("mousedown", (event) => {
+            const mouse: THREE.Vector2 = new THREE.Vector2(0, 0);
+
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            this.rayCaster.setFromCamera(mouse, this.camera);
+            const intersects = this.rayCaster.intersectObjects(this.roomMarkers);
+            if (intersects.length > 0) {
+
+                const marker: MapMarker<RoomData> = <MapMarker<RoomData>>intersects[0].object;
+
+                this.showRoomInformation(marker.getData());
+
+            } else {
+                // TODO
+            }
+
+        });
 
         $("#goto-map").click(() => {
 
