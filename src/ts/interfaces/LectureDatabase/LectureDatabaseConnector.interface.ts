@@ -1,4 +1,5 @@
-import {LectureData} from "./LectureDatabase.interface";
+import {LectureData} from "./LectureData.interface";
+import {RoomData} from "../RoomDatabase/RoomData.interface";
 
 export interface LectureDatabaseConnector {
 

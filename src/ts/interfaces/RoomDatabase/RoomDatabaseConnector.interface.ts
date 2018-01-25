@@ -2,6 +2,8 @@ import {RoomData} from "./RoomData.interface";
 
 export interface RoomDatabaseConnector {
 
-    getRoomData(roomId: string): Promise<RoomData[]>;
+    getDataForRoom(roomId: string): Promise<RoomData>;
+
+    getDataForRooms(roomId: string): Promise<RoomData[]>;
 
 }

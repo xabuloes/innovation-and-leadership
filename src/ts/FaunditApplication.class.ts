@@ -13,6 +13,8 @@ import {RoomDatabaseConnector} from "./interfaces/RoomDatabase/RoomDatabaseConne
 import {RoomData} from "./interfaces/RoomDatabase/RoomData.interface";
 import {UserProfileService} from "./interfaces/UserProfileService/UserProfileService.interface";
 import {DEPENDENCY_IDENTIFIER as DI} from "./DependencyIdentifier.const";
+import {LectureDatabaseConnector} from "./interfaces/LectureDatabase/LectureDatabaseConnector.interface";
+import {LectureData} from "./interfaces/LectureDatabase/LectureData.interface";
 
 declare const openRoomSidebar: Function;
 
@@ -45,16 +47,10 @@ export class FaunditApplication {
 
     private roomMarkers: MapMarker<RoomData>[];
 
-    @inject(DI.LOCATION_DETERMINATION_SERVICE)
-    private locationDeterminationService: LocationDeterminationService;
-
-    @inject(DI.ROOM_DATABASE_CONNECTOR)
-    private roomDatabaseConnector: RoomDatabaseConnector;
-
-    @inject(DI.USER_PROFILE_SERVICE)
-    private userProfileService: UserProfileService;
-
-    constructor() {
+    constructor(@inject(DI.USER_PROFILE_SERVICE) private userProfileService: UserProfileService,
+                @inject(DI.ROOM_DATABASE_CONNECTOR) private roomDatabaseConnector: RoomDatabaseConnector,
+                @inject(DI.LOCATION_DETERMINATION_SERVICE) private locationDeterminationService: LocationDeterminationService,
+                @inject(DI.LECTURE_DATABASE_CONNECTOR) private lectureDatabaseConnector: LectureDatabaseConnector) {
 
         document.addEventListener("mousemove", (event) => {
             event.preventDefault();
@@ -84,6 +80,11 @@ export class FaunditApplication {
         });
 
         this.installEventHandlers();
+
+        this.showTodaysLecturesBasedOnUserData()
+            .then(() => {
+                // TODO
+            });
 
         this.rayCaster = new THREE.Raycaster();
 
@@ -131,6 +132,27 @@ export class FaunditApplication {
                     });
 
                 this.render();
+            });
+
+    }
+
+    private showTodaysLecturesBasedOnUserData(): Promise<void> {
+
+        console.log(this.lectureDatabaseConnector);
+
+        return this.lectureDatabaseConnector.getLectureDataForToday()
+            .then((todaysLectures: LectureData[]) => {
+
+                // TODO
+
+                // <li class="current-lecture">
+                // <div class="current-lecture-title">Algorithmen & Datenstrukturen</div>
+                //     <div class="current-lecture-time">in 2 hours</div>
+                // <button class="current-lecture-goto">Show on map</button>
+                // </li>
+
+                alert(`Found ${todaysLectures.length} lecture(s) for today.`);
+
             });
 
     }
@@ -249,7 +271,7 @@ export class FaunditApplication {
             if (typeof roomIdParam === "string") {
                 if (roomIdParam.length > 0) {
 
-                    this.roomDatabaseConnector.getRoomData(roomIdParam)
+                    this.roomDatabaseConnector.getDataForRooms(roomIdParam)
                         .then((roomData: RoomData[]) => {
                             // TODO
 

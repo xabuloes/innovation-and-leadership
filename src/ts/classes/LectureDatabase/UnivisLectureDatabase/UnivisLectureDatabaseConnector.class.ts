@@ -8,10 +8,8 @@ import {LectureData} from "../../../interfaces/LectureDatabase/LectureData.inter
 @injectable()
 export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector {
 
-    @inject(DI.CONFIG)
-    private config: ApplicationConfig;
 
-    public constructor() {
+    public constructor(@inject(DI.CONFIG) private config: ApplicationConfig) {
         // TODO
     }
 

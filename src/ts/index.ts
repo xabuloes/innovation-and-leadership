@@ -13,6 +13,8 @@ import {MockedUserProfileService} from "./classes/UserProfileService/MockedUserP
 import {configDefault} from "./classes/Config/Default/Default.config";
 import {ApplicationConfig} from "./interfaces/ApplicationConfig/ApplicationConfig.interface";
 import {DEPENDENCY_IDENTIFIER as DI} from "./DependencyIdentifier.const";
+import {LectureDatabaseConnector} from "./interfaces/LectureDatabase/LectureDatabaseConnector.interface";
+import {FakeLectureDatabaseConnector} from "./classes/LectureDatabase/FakeLectureDatabase/FakeLectureDatabaseConnector.class";
 
 
 /**
@@ -30,11 +32,13 @@ const inversifyContainer: Container = new Container();
 inversifyContainer.bind<ApplicationConfig>(DI.CONFIG).toConstantValue(configDefault);
 
 inversifyContainer.bind<LocationDeterminationService>(DI.LOCATION_DETERMINATION_SERVICE)
-    .to(FakeLocationDeterminationService);
+    .to(FakeLocationDeterminationService).inSingletonScope();
 inversifyContainer.bind<RoomDatabaseConnector>(DI.ROOM_DATABASE_CONNECTOR)
-    .to(UnivisRoomDatabaseConnector);
+    .to(UnivisRoomDatabaseConnector).inSingletonScope();
+inversifyContainer.bind<LectureDatabaseConnector>(DI.LECTURE_DATABASE_CONNECTOR)
+    .to(FakeLectureDatabaseConnector).inSingletonScope();
 inversifyContainer.bind<UserProfileService>(DI.USER_PROFILE_SERVICE)
-    .to(MockedUserProfileService);
+    .to(MockedUserProfileService).inSingletonScope();
 
 /**
  * Resolve application instance (= start application)

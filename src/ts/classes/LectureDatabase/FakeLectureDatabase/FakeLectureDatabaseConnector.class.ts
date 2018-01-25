@@ -1,9 +1,15 @@
 import {LectureDatabaseConnector} from "../../../interfaces/LectureDatabase/LectureDatabaseConnector.interface";
 import {RoomData} from "../../../interfaces/RoomDatabase/RoomData.interface";
 import {LectureData} from "../../../interfaces/LectureDatabase/LectureData.interface";
+import {inject, injectable} from "inversify";
+import {RoomDatabaseConnector} from "../../../interfaces/RoomDatabase/RoomDatabaseConnector.interface";
 
+@injectable()
 export class FakeLectureDatabaseConnector implements LectureDatabaseConnector {
 
+    public constructor(@inject("roomDatabaseConnector") private roomDatabaseConnector: RoomDatabaseConnector) {
+        // TODO
+    }
 
     public getLectureDataForRoom(room: RoomData): Promise<LectureData[]> {
         return Promise.resolve([{
@@ -17,15 +23,29 @@ export class FakeLectureDatabaseConnector implements LectureDatabaseConnector {
     }
 
     public getLectureDataForToday(): Promise<LectureData[]> {
-        return Promise.resolve([]);
+
+        return this.roomDatabaseConnector.getDataForRoom("00.153")
+            .then((room: RoomData) => {
+
+                return [{
+                    name: "Algorithmen & Datenstrukturen",
+                    time: {
+                        start: new Date("2018-02-25T15:00:00"),
+                        end: new Date("2018-02-25T16:30:00"),
+                    },
+                    room, // TODO: How to get room?
+                }];
+
+            });
+
     }
 
     public getLectureDataForTomorrow(): Promise<LectureData[]> {
-        return Promise.resolve([]);
+        throw new Error("Not implemented yet.");
     }
 
     public getLectureDataForTime(): Promise<LectureData[]> {
-        return Promise.resolve([]);
+        throw new Error("Not implemented yet.");
     }
 
 }

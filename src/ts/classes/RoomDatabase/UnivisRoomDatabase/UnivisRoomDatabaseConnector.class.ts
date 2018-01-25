@@ -10,14 +10,26 @@ import {DEPENDENCY_IDENTIFIER as DI} from "../../../DependencyIdentifier.const";
 @injectable()
 export class UnivisRoomDatabaseConnector implements RoomDatabaseConnector {
 
-    @inject(DI.CONFIG)
-    private config: ApplicationConfig;
-
-    constructor() {
+    constructor(@inject(DI.CONFIG) private config: ApplicationConfig) {
         // TODO
     }
 
-    public getRoomData(roomId: string): Promise<RoomData[]> {
+    public getDataForRoom(roomId: string): Promise<RoomData> {
+
+        return this.getDataForRooms(roomId)
+            .then((rooms: RoomData[]) => {
+
+                if (rooms.length === 1) {
+                    return rooms[0];
+                }
+                else {
+                    throw new Error(`Room could not be found!`);
+                }
+
+            });
+    }
+
+    public getDataForRooms(roomId: string): Promise<RoomData[]> {
         return new Promise<RoomData[]>((resolve, reject) => {
 
                 (new Contract()).In(roomId)
