@@ -25,10 +25,6 @@ export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector 
 
     }
 
-    public getLectureDataForRoom(room: RoomData): Promise<LectureData[]> {
-        throw new Error("Not implemented yet.");
-    }
-
     public getLectureDataForToday(searchPattern: string): Promise<LectureData[]> {
 
         const searchFor = "lectures";
@@ -112,4 +108,86 @@ export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector 
         throw new Error("Not implemented yet.");
     }
 
+    public getLectureDataForLocation(location: string): Promise<LectureData[]> {
+
+
+        const searchFor = "lectures",
+            searchPattern = "Technische Fakultaet";
+
+        return this.xml2JsonRequestAdapterService
+            .ajaxRequest({
+                method: "GET",
+                url: `${this.config.lectureDatabase.host}/prg?search=${searchFor}&department=${searchPattern}&show=${this.desiredFormat}`,
+                dataType: "html"
+            })
+            .then((result: any) => {
+
+                (new Contract()).In(result).isDefined().isNotNull();
+                (new Contract()).In(result.UnivIS).isDefined().isNotNull();
+                (new Contract()).In(result.UnivIS.Lecture).isDefined().isNotNull();
+
+                const univisResults: any[] = result.UnivIS.Lecture.slice(0, 40);
+
+                return univisResults
+                    .filter((lecture: any) => lecture.name !== null)
+                    .filter((lecture: any) => lecture.name.length > 0)
+                    .filter((lecture: any) => lecture.type[0] === this.LECTURE_TYPE.LECTURE)
+                    .map((lecture: any) => {
+
+                        console.log(lecture);
+
+                        let language = "?";
+
+                        if (typeof lecture.leclanguage !== "undefined") {
+                            switch (lecture.leclanguage[0]) {
+
+                                case "D":
+                                    language = "German";
+                                    break;
+
+                                case "E":
+                                    language = "English";
+                                    break;
+
+                            }
+                        }
+
+                        /* tslint:disable */
+                        const fakeRoom: RoomData = {
+                            "id": "00.153",
+                            "buildingName": "113 RRZE / Informatik",
+                            "location": {"latitude": 49.573891, "longitude": 11.027331},
+                            "fullAddress": "Martensstraße 3, 91058 Erlangen",
+                            "hasAudio": false,
+                            "hasBeamer": true,
+                            "hasBoard": true,
+                            "capacity": 20
+                        };
+                        /* tslint:enable */
+
+                        // console.log(lecture);
+                        return <LectureData>{
+                            name: lecture.name[0],
+                            time: {
+                                start: new Date(),
+                                end: new Date(),
+                            },
+                            language,
+                            room: fakeRoom,
+                            guestsAreAllowed: (typeof lecture.gast !== "undefined") ? (lecture.gast[0] === "ja") : (true), // TODO: Put "ja" in const
+                            type: "UNKNOWN",
+                            topics: lecture.keywords,
+                            url: (typeof lecture.url_description !== "undefined") ? (lecture.url_description[0]) : (undefined)
+                        };
+
+                    });
+
+            });
+
+
+    }
+
+    public getLectureDataForRoom(room: RoomData): Promise<LectureData[]> {
+        return Promise.resolve([]);
+    }
 }

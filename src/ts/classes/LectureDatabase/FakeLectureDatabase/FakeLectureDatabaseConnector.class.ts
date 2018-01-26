@@ -11,18 +11,29 @@ export class FakeLectureDatabaseConnector implements LectureDatabaseConnector {
         // TODO
     }
 
-    public getLectureDataForRoom(room: RoomData): Promise<LectureData[]> {
-        return Promise.resolve([{
-            name: "Algorithmen & Datenstrukturen",
-            time: {
-                start: new Date("2018-02-25T15:00:00"),
-                end: new Date("2018-02-25T16:30:00"),
-            },
-            language: "?",
-            room,
-            guestsAreAllowed: false,
-            type: "",
-        }]);
+
+    getLectureDataForRoom(room: RoomData): Promise<LectureData[]> {
+        return Promise.resolve([]);
+    }
+
+    public getLectureDataForLocation(location: string): Promise<LectureData[]> {
+
+        return this.roomDatabaseConnector.getDataForRoom("00.153")
+            .then((room: RoomData) => {
+
+                return [{
+                    name: "Algorithmen & Datenstrukturen",
+                    time: {
+                        start: new Date("2018-02-25T15:00:00"),
+                        end: new Date("2018-02-25T16:30:00"),
+                    },
+                    language: "?",
+                    room,
+                    guestsAreAllowed: false,
+                    type: "",
+                }];
+            });
+
     }
 
     public getLectureDataForToday(searchPattern: string): Promise<LectureData[]> {

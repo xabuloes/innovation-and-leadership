@@ -108,6 +108,12 @@ body {
 
 }
 
+td {
+
+    vertical-align: top;
+    
+}
+
 .faundit-btn {
 
     background-color: #f9f9f9;

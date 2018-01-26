@@ -59,6 +59,11 @@ export class FaunditApplication {
                 // TODO
             });
 
+        this.showLecturesAtLocation()
+            .then(() => {
+                // TODO
+            });
+
         this.rayCaster = new THREE.Raycaster();
 
         this.lighting = new THREE.DirectionalLight(0xffffff, 2.0);
@@ -111,10 +116,48 @@ export class FaunditApplication {
 
     private showLecturesAtLocation(): Promise<void> {
 
-        // $("#current-lecture-list-recommendation-spinner").show();
-        // current-lecture-list-at-location-spinner
+        return this.lectureDatabaseConnector.getLectureDataForLocation("TechFak")
+            .then((lecturesAtLocation: LectureData[]) => {
 
-        return Promise.resolve();
+                if (lecturesAtLocation.length === 0) {
+                    return alert("No lectures found for TechFak!");
+                }
+
+                $("#current-lecture-list-at-location").empty();
+
+                $("#current-lecture-list-at-location-spinner").hide();
+
+                let i = 0;
+
+                lecturesAtLocation.forEach((lecture: LectureData) => {
+
+                        i++;
+
+                        const listObject: JQuery = $(`<li class="lecture">`
+                            + `<div class="lecture-title">${lecture.name}<br/>[ ${lecture.language} ]</div>`
+                            // + `<div class="lecture-time">in 2 hours</div>`
+                            + `<a class="lecture-detail-link" target="_blank" href="${lecture.url}">Details</a>`
+                            + ` | <button id="lecture-at-location-${i}" class="lecture-detail-link"><i class="fa fa-map-marker"></i> Show on map</button>`
+                            + ((lecture.guestsAreAllowed) ? (`<div>Guests are allowed</div>`) : (`<div>Guests are not allowed</div>`))
+                            + `</li>`);
+
+                        $("#current-lecture-list-at-location").append(listObject);
+
+                        $(`#lecture-at-location-${i}`).click((event) => {
+
+                            this.hideStartView();
+
+                            this.showRoomOnMap(lecture.room)
+                                .then(() => {
+                                    this.showRoomInformation(lecture.room);
+                                });
+                        });
+
+                    }
+                );
+
+            });
+
     }
 
     private showInterestingLecturesToday(): Promise<void> {
