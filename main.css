@@ -120,6 +120,29 @@ body {
 
 #goto-map {
 
+    position: fixed;
+
+    top: 4%;
+    right: 10%;
+
+    font-size: 18px;
+
+    border: none;
+
+    background-color: transparent;
+
+    text-transform: uppercase;
+
+    color: white;
+
+}
+
+#goto-map-icon {
+
+    font-size: 64px;
+
+    padding-bottom: 10px;
+
 }
 
 #current-lecture-list {
@@ -150,7 +173,13 @@ body {
 
 .lecture-detail-link {
 
+    text-decoration: none;
+
     color: #4b4a56;
+
+    background-color: transparent;
+
+    border: none;
 
 }
 

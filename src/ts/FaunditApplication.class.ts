@@ -128,17 +128,31 @@ export class FaunditApplication {
 
                 $("#current-lecture-list-recommendation-spinner").hide();
 
+                let i = 0;
+
                 todaysLectures.forEach((lecture: LectureData) => {
 
+                        i++;
+
                         const listObject: JQuery = $(`<li class="lecture">`
-                            + `<div class="lecture-title">${lecture.name}</div>`
+                            + `<div class="lecture-title">${lecture.name}<br/>[ ${lecture.language} ]</div>`
                             // + `<div class="lecture-time">in 2 hours</div>`
-                            + `<a class="lecture-detail-link" target="_blank" href="${lecture.url}">Detailed information</a>`
-                            + ` | <a class="lecture-detail-link" href="#">Show on map</a>`
+                            + `<a class="lecture-detail-link" target="_blank" href="${lecture.url}">Details</a>`
+                            + ` | <button id="lecture-${i}" class="lecture-detail-link"><i class="fa fa-map-marker"></i> Show on map</button>`
                             + ((lecture.guestsAreAllowed) ? (`<div>Guests are allowed</div>`) : (`<div>Guests are not allowed</div>`))
                             + `</li>`);
 
                         $("#current-lecture-list-recommendation").append(listObject);
+
+                        $(`#lecture-${i}`).click((event) => {
+
+                            this.hideStartView();
+
+                            this.showRoomOnMap(lecture.room)
+                                .then(() => {
+                                    this.showRoomInformation(lecture.room);
+                                });
+                        });
 
                     }
                 );
@@ -149,7 +163,15 @@ export class FaunditApplication {
 
     private showStartView(): void {
 
+        $("#start-view").removeClass("animated fadeOutUp");
         $("#start-view").addClass("animated fadeInDown");
+
+    }
+
+    private hideStartView(): void {
+
+        $("#start-view").removeClass("animated fadeOutIn");
+        $("#start-view").addClass("animated fadeOutUp");
 
     }
 
@@ -166,9 +188,7 @@ export class FaunditApplication {
             const roomEngagement: any = document.getElementById("room-info-engaged");
             const roomAvailability: any = document.getElementById("room-info-availability");
 
-            roomName.innerText =
-                `${roomData.id} (${roomData.capacity} seats)`
-            ;
+            roomName.innerText = `${roomData.id} (${roomData.capacity} seats)`;
             roomBuilding.innerText = roomData.buildingName;
 
             roomEquipment.innerHTML =
@@ -182,12 +202,9 @@ export class FaunditApplication {
                 roomDescription.innerText = "No room description available.";
             }
 
-            roomEngagement.innerHTML = `
-            Currently, there is <b>Algorithmen und Datenstrukturen (Tafelübung)</b> in progress.
-                `;
+            roomEngagement.innerHTML = `Currently, there is <b>Algorithmen und Datenstrukturen (Tafelübung)</b> in progress.`;
 
-            roomAvailability.innerHTML = `
-            This room is available from <b>15:00</b> on.`;
+            roomAvailability.innerHTML = `This room is available from <b>15:00</b> on.`;
 
         }
         else {
@@ -195,7 +212,7 @@ export class FaunditApplication {
         }
     }
 
-    private showOnMap(roomData: RoomData): Promise<boolean> {
+    private showRoomOnMap(roomData: RoomData): Promise<boolean> {
 
         return new Promise((resolve, reject) => {
 
@@ -290,16 +307,13 @@ export class FaunditApplication {
 
         $("#goto-map").click(() => {
 
-            // TODO
-            $("#start-view").removeClass("animated fadeOutIn");
-            $("#start-view").addClass("animated fadeOutUp");
+            this.hideStartView();
 
         });
 
         $("#goto-start-view").click(() => {
 
-            $("#start-view").removeClass("animated fadeOutUp");
-            $("#start-view").addClass("animated fadeInDown");
+            this.showStartView();
 
         });
 
@@ -336,7 +350,7 @@ export class FaunditApplication {
                                             this.showRoomInformation(roomData);
                                         }
 
-                                        this.showOnMap(roomData)
+                                        this.showRoomOnMap(roomData)
                                             .then(() => {
                                                 // TODO: Display room data
                                             });

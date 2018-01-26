@@ -15,6 +15,8 @@ export interface LectureData {
 
     guestsAreAllowed: boolean;
 
+    language: string;
+
     url?: string;
 
     topics?: string[];

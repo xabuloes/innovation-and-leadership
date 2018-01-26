@@ -6,6 +6,7 @@ import {RoomData} from "../../../interfaces/RoomDatabase/RoomData.interface";
 import {LectureData} from "../../../interfaces/LectureDatabase/LectureData.interface";
 import {Xml2JsonRequestAdapter} from "../../../interfaces/Xml2JsonRequestAdapter/Xml2JsonRequestAdapter.interface";
 import {Contract} from "typedcontract";
+import {RoomDatabaseConnector} from "../../../interfaces/RoomDatabase/RoomDatabaseConnector.interface";
 
 @injectable()
 export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector {
@@ -18,6 +19,7 @@ export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector 
     };
 
     public constructor(@inject(DI.CONFIG) private config: ApplicationConfig,
+                       @inject(DI.ROOM_DATABASE_CONNECTOR) private roomDatabaseConnector: RoomDatabaseConnector,
                        @inject(DI.XML2JSON_REQUEST_ADAPTER_SERVICE) private xml2JsonRequestAdapterService: Xml2JsonRequestAdapter) {
         // TODO
 
@@ -51,6 +53,35 @@ export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector 
 
                         console.log(lecture);
 
+                        let language = "?";
+
+                        if (typeof lecture.leclanguage !== "undefined") {
+                            switch (lecture.leclanguage[0]) {
+
+                                case "D":
+                                    language = "German";
+                                    break;
+
+                                case "E":
+                                    language = "English";
+                                    break;
+
+                            }
+                        }
+
+                        /* tslint:disable */
+                        const fakeRoom: RoomData = {
+                            "id": "00.153",
+                            "buildingName": "113 RRZE / Informatik",
+                            "location": {"latitude": 49.573891, "longitude": 11.027331},
+                            "fullAddress": "Martensstraße 3, 91058 Erlangen",
+                            "hasAudio": false,
+                            "hasBeamer": true,
+                            "hasBoard": true,
+                            "capacity": 20
+                        };
+                        /* tslint:enable */
+
                         // console.log(lecture);
                         return <LectureData>{
                             name: lecture.name[0],
@@ -58,11 +89,14 @@ export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector 
                                 start: new Date(),
                                 end: new Date(),
                             },
+                            language,
+                            room: fakeRoom,
                             guestsAreAllowed: (lecture.gast[0] === "ja"), // TODO: Put "ja" in const
                             type: "UNKNOWN",
                             topics: lecture.keywords,
                             url: (typeof lecture.url_description !== "undefined") ? (lecture.url_description[0]) : (undefined)
                         };
+
 
                     });
 

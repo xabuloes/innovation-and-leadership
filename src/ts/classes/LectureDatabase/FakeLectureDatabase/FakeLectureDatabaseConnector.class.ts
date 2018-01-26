@@ -18,6 +18,7 @@ export class FakeLectureDatabaseConnector implements LectureDatabaseConnector {
                 start: new Date("2018-02-25T15:00:00"),
                 end: new Date("2018-02-25T16:30:00"),
             },
+            language: "?",
             room,
             guestsAreAllowed: false,
             type: "",
@@ -35,6 +36,7 @@ export class FakeLectureDatabaseConnector implements LectureDatabaseConnector {
                         start: new Date("2018-02-25T15:00:00"),
                         end: new Date("2018-02-25T16:30:00"),
                     },
+                    language: "?",
                     room, // TODO: How to get room?
                     guestsAreAllowed: false,
                     type: ""

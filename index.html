@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="./main.css">
     <link rel="stylesheet" href="node_modules/animate.css/animate.min.css">
 
+    <script src="https://use.fontawesome.com/6e5be31fad.js"></script>
+
     <title>FAUndIt</title>
 </head>
 <body>
@@ -16,21 +18,25 @@
 <div id="start-view">
 
     <div id="start-view-header">
-        <h1 class="start-view-header-title">FAUNDIT</h1>
+        <div style="width:50%">
+            <h1 class="start-view-header-title">FAUNDIT <i class="fa fa-map-marker"></i></h1>
+        </div>
+        <button id="goto-map">
+            <i id="goto-map-icon" class="fa fa-location-arrow fa-lg"></i>
+            <p>Go to map </p>
+        </button>
     </div>
 
     <div id="start-view-body">
 
-        <button id="goto-map" class="faundit-btn">Go to map!</button>
-
         <table id="start-view-grid">
             <tr>
                 <td>
-                    <h2>This may interest you</h2>
+                    <h2>This may interest you <i class="fa fa-heart-o"></i></h2>
                     <hr/>
                 </td>
                 <td>
-                    <h2>What's up at Techfak?</h2>
+                    <h2>What's up @Techfak?</h2>
                     <hr/>
 
                 </td>
@@ -48,14 +54,18 @@
             <tr>
                 <td>
                     <div>
-                        <div id="current-lecture-list-recommendation-spinner">Loading data from UnivIS...</div>
+                        <div id="current-lecture-list-recommendation-spinner">
+                            <i class="fa fa-hourglass-o fa-lg"></i> Loading data from UnivIS...
+                        </div>
                         <ul id="current-lecture-list-recommendation" class="lecture-list">
                         </ul>
                     </div>
                 </td>
                 <td>
                     <div>
-                        <div id="current-lecture-list-at-location-spinner">Loading data from UnivIS...</div>
+                        <div id="current-lecture-list-at-location-spinner">
+                            <i class="fa fa-hourglass-o fa-lg"></i> Loading data from UnivIS...
+                        </div>
                         <ul id="current-lecture-list-at-location" class="lecture-list">
                         </ul>
                     </div>
@@ -116,7 +126,7 @@
         <button id="openSearchSidebar" class="w3-button w3-teal w3-xlarge" onclick="openSearchSidebar()">&#9776;
         </button>
 
-        <button id="goto-start-view" class="w3-button w3-teal w3-xlarge">What's up?
+        <button id="goto-start-view" class="w3-button w3-xlarge">What's up @TechFak?
         </button>
 
         <script>
