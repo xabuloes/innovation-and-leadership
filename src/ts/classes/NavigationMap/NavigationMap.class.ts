@@ -24,6 +24,8 @@ export class NavigationMap {
 
     private _boundingBox: Box3;
 
+    private _markers: MapMarker<any>[];
+
     constructor(min: EarthCoordinate, max: EarthCoordinate) {
 
         (new Contract()).In(min.longitude).isLessOrEqualThan(max.longitude);
@@ -37,6 +39,8 @@ export class NavigationMap {
         this._mtlLoader = new MTLLoader();
 
         this._mapMesh = new Object3D();
+
+        this._markers = [];
 
     }
 
@@ -162,6 +166,8 @@ export class NavigationMap {
      */
     public setRoomMarker(location: EarthCoordinate, data: RoomData /* TODO: Make generic? */, color?: number): MapMarker<RoomData> {
 
+        this.clearMarkers();
+
         color = color || 0xffff00;
 
         /**
@@ -187,7 +193,17 @@ export class NavigationMap {
 
         newMarker.startOscilating();
 
+        this._markers.push(newMarker);
+
         return newMarker;
+    }
+
+    public clearMarkers(): void {
+
+        this._markers.forEach((marker: MapMarker<any>) => {
+            this.removeMapMarker(marker);
+        });
+
     }
 
     /**
@@ -195,7 +211,7 @@ export class NavigationMap {
      *
      * @param {MapMarker} markerToRemove
      */
-    public removeMapMarker(markerToRemove: MapMarker<RoomData>): void {
+    public removeMapMarker(markerToRemove: MapMarker<any>): void {
 
         this.mapMesh.remove(markerToRemove);
     }

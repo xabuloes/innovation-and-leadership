@@ -108,10 +108,16 @@ body {
 
 }
 
+#room-visitor-list {
+
+    list-style: none;
+
+}
+
 td {
 
     vertical-align: top;
-    
+
 }
 
 .faundit-btn {

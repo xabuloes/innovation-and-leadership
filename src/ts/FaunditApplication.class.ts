@@ -15,6 +15,8 @@ import {UserProfileService} from "./interfaces/UserProfileService/UserProfileSer
 import {DEPENDENCY_IDENTIFIER as DI} from "./DependencyIdentifier.const";
 import {LectureDatabaseConnector} from "./interfaces/LectureDatabase/LectureDatabaseConnector.interface";
 import {LectureData} from "./interfaces/LectureDatabase/LectureData.interface";
+import {SocialService} from "./interfaces/SocialService/SocialService.interface";
+import {UserProfileData} from "./interfaces/UserProfileService/UserProfileData.interface";
 
 declare const openRoomSidebar: Function;
 
@@ -47,7 +49,8 @@ export class FaunditApplication {
 
     private roomMarkers: MapMarker<RoomData>[];
 
-    constructor(@inject(DI.USER_PROFILE_SERVICE) private userProfileService: UserProfileService,
+    constructor(@inject(DI.SOCIAL_SERVICE) private socialService: SocialService,
+                @inject(DI.USER_PROFILE_SERVICE) private userProfileService: UserProfileService,
                 @inject(DI.ROOM_DATABASE_CONNECTOR) private roomDatabaseConnector: RoomDatabaseConnector,
                 @inject(DI.LOCATION_DETERMINATION_SERVICE) private locationDeterminationService: LocationDeterminationService,
                 @inject(DI.LECTURE_DATABASE_CONNECTOR) private lectureDatabaseConnector: LectureDatabaseConnector) {
@@ -248,6 +251,27 @@ export class FaunditApplication {
             roomEngagement.innerHTML = `Currently, there is <b>Algorithmen und Datenstrukturen (Tafelübung)</b> in progress.`;
 
             roomAvailability.innerHTML = `This room is available from <b>15:00</b> on.`;
+
+            const roomVisitorList: JQuery = $("#room-visitor-list");
+
+            roomVisitorList.empty();
+
+            const visitors: UserProfileData[] = this.socialService.getAllUsersInRoom(roomData);
+
+            if (visitors.length === 0) {
+                const listObject: JQuery = $(`<li>Nobody is here at the moment.</i></li>`);
+
+                roomVisitorList.append(listObject);
+            }
+
+            visitors.forEach((visitor: UserProfileData) => {
+
+                const listObject: JQuery = $(`<li><i class="fa fa-user-cirlce-o"></i> ${visitor.firstName} (${visitor.username})</li>`);
+
+                roomVisitorList.append(listObject);
+            });
+
+            // TODO
 
         }
         else {

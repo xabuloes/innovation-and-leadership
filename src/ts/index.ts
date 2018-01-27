@@ -18,6 +18,8 @@ import {FakeLectureDatabaseConnector} from "./classes/LectureDatabase/FakeLectur
 import {Xml2JsonRequestAdapter} from "./interfaces/Xml2JsonRequestAdapter/Xml2JsonRequestAdapter.interface";
 import {Xml2JsonRequestAdpaterJQuery} from "./classes/Xml2JsonRequestAdapter/Xml2JsonRequestAdpaterJQuery.class";
 import {UnivisLectureDatabaseConnector} from "./classes/LectureDatabase/UnivisLectureDatabase/UnivisLectureDatabaseConnector.class";
+import {SocialService} from "./interfaces/SocialService/SocialService.interface";
+import {FAUSocialService} from "./classes/FAUSocialService/FAUSocialService.class";
 
 /**
  * Load missing three js components:
@@ -35,6 +37,9 @@ inversifyContainer.bind<ApplicationConfig>(DI.CONFIG).toConstantValue(configDefa
 
 inversifyContainer.bind<Xml2JsonRequestAdapter>(DI.XML2JSON_REQUEST_ADAPTER_SERVICE)
     .to(Xml2JsonRequestAdpaterJQuery).inSingletonScope();
+
+inversifyContainer.bind<SocialService>(DI.SOCIAL_SERVICE)
+    .to(FAUSocialService).inSingletonScope();
 
 inversifyContainer.bind<LocationDeterminationService>(DI.LOCATION_DETERMINATION_SERVICE)
     .to(FakeLocationDeterminationService).inSingletonScope();
