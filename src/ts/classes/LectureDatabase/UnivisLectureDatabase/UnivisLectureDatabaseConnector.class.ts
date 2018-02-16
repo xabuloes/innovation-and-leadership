@@ -43,6 +43,7 @@ export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector 
 
                 return result.UnivIS.Lecture
                     .filter((lecture: any) => lecture.name !== null)
+                    .filter((lecture: any) => typeof lecture.name !== "undefined")
                     .filter((lecture: any) => lecture.name.length > 0)
                     .filter((lecture: any) => lecture.type[0] === this.LECTURE_TYPE.LECTURE)
                     .map((lecture: any) => {
@@ -78,16 +79,15 @@ export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector 
                         };
                         /* tslint:enable */
 
-                        // console.log(lecture);
                         return <LectureData>{
-                            name: lecture.name[0],
+                            name: (typeof lecture.name !== "undefined") ? (lecture.name[0]) : ("Unknown Lecture"),
                             time: {
                                 start: new Date(),
                                 end: new Date(),
                             },
                             language,
                             room: fakeRoom,
-                            guestsAreAllowed: (lecture.gast[0] === "ja"), // TODO: Put "ja" in const
+                            guestsAreAllowed: (typeof lecture.gast !== "undefined") ? (lecture.gast[0] === "ja") : ("?"), // TODO: Put "ja" in const
                             type: "UNKNOWN",
                             topics: lecture.keywords,
                             url: (typeof lecture.url_description !== "undefined") ? (lecture.url_description[0]) : (undefined)
@@ -110,7 +110,6 @@ export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector 
 
     public getLectureDataForLocation(location: string): Promise<LectureData[]> {
 
-
         const searchFor = "lectures",
             searchPattern = "Technische Fakultaet";
 
@@ -130,11 +129,10 @@ export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector 
 
                 return univisResults
                     .filter((lecture: any) => lecture.name !== null)
+                    .filter((lecture: any) => typeof lecture.name !== "undefined")
                     .filter((lecture: any) => lecture.name.length > 0)
                     .filter((lecture: any) => lecture.type[0] === this.LECTURE_TYPE.LECTURE)
                     .map((lecture: any) => {
-
-                        console.log(lecture);
 
                         let language = "?";
 
@@ -167,7 +165,7 @@ export class UnivisLectureDatabaseConnector implements LectureDatabaseConnector 
 
                         // console.log(lecture);
                         return <LectureData>{
-                            name: lecture.name[0],
+                            name: (typeof lecture.name !== "undefined") ? (lecture.name[0]) : "Unknown Lecture",
                             time: {
                                 start: new Date(),
                                 end: new Date(),
